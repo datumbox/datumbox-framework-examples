@@ -1,0 +1,2 @@
+http://www.sgi.com/tech/mlc/db/diabetes.names
+http://www.sgi.com/tech/mlc/db/diabetes.all

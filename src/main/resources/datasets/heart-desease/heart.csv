@@ -1,0 +1,271 @@
+Age,Sex,ChestPain,RestBP,Cholesterol,BloodSugar,ECG,MaxHeartRate,Angina,OldPeak,STSlope,Vessels,Thal,Class
+70,male,type4,130,322,FALSE,type2,109,FALSE,2.4,2,3,normal,not-healthy
+67,female,type3,115,564,FALSE,type2,160,FALSE,1.6,2,0,reversable defect,healthy
+57,male,type2,124,261,FALSE,type0,141,FALSE,0.3,1,0,reversable defect,not-healthy
+64,male,type4,128,263,FALSE,type0,105,TRUE,0.2,2,1,reversable defect,healthy
+74,female,type2,120,269,FALSE,type2,121,TRUE,0.2,1,1,normal,healthy
+65,male,type4,120,177,FALSE,type0,140,FALSE,0.4,1,0,reversable defect,healthy
+56,male,type3,130,256,TRUE,type2,142,TRUE,0.6,2,1,fixed defect,not-healthy
+59,male,type4,110,239,FALSE,type2,142,TRUE,1.2,2,1,reversable defect,not-healthy
+60,male,type4,140,293,FALSE,type2,170,FALSE,1.2,2,2,reversable defect,not-healthy
+63,female,type4,150,407,FALSE,type2,154,FALSE,4,2,3,reversable defect,not-healthy
+59,male,type4,135,234,FALSE,type0,161,FALSE,0.5,2,0,reversable defect,healthy
+53,male,type4,142,226,FALSE,type2,111,TRUE,0,1,0,reversable defect,healthy
+44,male,type3,140,235,FALSE,type2,180,FALSE,0,1,0,normal,healthy
+61,male,type1,134,234,FALSE,type0,145,FALSE,2.6,2,2,normal,not-healthy
+57,female,type4,128,303,FALSE,type2,159,FALSE,0,1,1,normal,healthy
+71,female,type4,112,149,FALSE,type0,125,FALSE,1.6,2,0,normal,healthy
+46,male,type4,140,311,FALSE,type0,120,TRUE,1.8,2,2,reversable defect,not-healthy
+53,male,type4,140,203,TRUE,type2,155,TRUE,3.1,3,0,reversable defect,not-healthy
+64,male,type1,110,211,FALSE,type2,144,TRUE,1.8,2,0,normal,healthy
+40,male,type1,140,199,FALSE,type0,178,TRUE,1.4,1,0,reversable defect,healthy
+67,male,type4,120,229,FALSE,type2,129,TRUE,2.6,2,2,reversable defect,not-healthy
+48,male,type2,130,245,FALSE,type2,180,FALSE,0.2,2,0,normal,healthy
+43,male,type4,115,303,FALSE,type0,181,FALSE,1.2,2,0,normal,healthy
+47,male,type4,112,204,FALSE,type0,143,FALSE,0.1,1,0,normal,healthy
+54,female,type2,132,288,TRUE,type2,159,TRUE,0,1,1,normal,healthy
+48,female,type3,130,275,FALSE,type0,139,FALSE,0.2,1,0,normal,healthy
+46,female,type4,138,243,FALSE,type2,152,TRUE,0,2,0,normal,healthy
+51,female,type3,120,295,FALSE,type2,157,FALSE,0.6,1,0,normal,healthy
+58,male,type3,112,230,FALSE,type2,165,FALSE,2.5,2,1,reversable defect,not-healthy
+71,female,type3,110,265,TRUE,type2,130,FALSE,0,1,1,normal,healthy
+57,male,type3,128,229,FALSE,type2,150,FALSE,0.4,2,1,reversable defect,not-healthy
+66,male,type4,160,228,FALSE,type2,138,FALSE,2.3,1,0,fixed defect,healthy
+37,female,type3,120,215,FALSE,type0,170,FALSE,0,1,0,normal,healthy
+59,male,type4,170,326,FALSE,type2,140,TRUE,3.4,3,0,reversable defect,not-healthy
+50,male,type4,144,200,FALSE,type2,126,TRUE,0.9,2,0,reversable defect,not-healthy
+48,male,type4,130,256,TRUE,type2,150,TRUE,0,1,2,reversable defect,not-healthy
+61,male,type4,140,207,FALSE,type2,138,TRUE,1.9,1,1,reversable defect,not-healthy
+59,male,type1,160,273,FALSE,type2,125,FALSE,0,1,0,normal,not-healthy
+42,male,type3,130,180,FALSE,type0,150,FALSE,0,1,0,normal,healthy
+48,male,type4,122,222,FALSE,type2,186,FALSE,0,1,0,normal,healthy
+40,male,type4,152,223,FALSE,type0,181,FALSE,0,1,0,reversable defect,not-healthy
+62,female,type4,124,209,FALSE,type0,163,FALSE,0,1,0,normal,healthy
+44,male,type3,130,233,FALSE,type0,179,TRUE,0.4,1,0,normal,healthy
+46,male,type2,101,197,TRUE,type0,156,FALSE,0,1,0,reversable defect,healthy
+59,male,type3,126,218,TRUE,type0,134,FALSE,2.2,2,1,fixed defect,not-healthy
+58,male,type3,140,211,TRUE,type2,165,FALSE,0,1,0,normal,healthy
+49,male,type3,118,149,FALSE,type2,126,FALSE,0.8,1,3,normal,not-healthy
+44,male,type4,110,197,FALSE,type2,177,FALSE,0,1,1,normal,not-healthy
+66,male,type2,160,246,FALSE,type0,120,TRUE,0,2,3,fixed defect,not-healthy
+65,female,type4,150,225,FALSE,type2,114,FALSE,1,2,3,reversable defect,not-healthy
+42,male,type4,136,315,FALSE,type0,125,TRUE,1.8,2,0,fixed defect,not-healthy
+52,male,type2,128,205,TRUE,type0,184,FALSE,0,1,0,normal,healthy
+65,female,type3,140,417,TRUE,type2,157,FALSE,0.8,1,1,normal,healthy
+63,female,type2,140,195,FALSE,type0,179,FALSE,0,1,2,normal,healthy
+45,female,type2,130,234,FALSE,type2,175,FALSE,0.6,2,0,normal,healthy
+41,female,type2,105,198,FALSE,type0,168,FALSE,0,1,1,normal,healthy
+61,male,type4,138,166,FALSE,type2,125,TRUE,3.6,2,1,normal,not-healthy
+60,female,type3,120,178,TRUE,type0,96,FALSE,0,1,0,normal,healthy
+59,female,type4,174,249,FALSE,type0,143,TRUE,0,2,0,normal,not-healthy
+62,male,type2,120,281,FALSE,type2,103,FALSE,1.4,2,1,reversable defect,not-healthy
+57,male,type3,150,126,TRUE,type0,173,FALSE,0.2,1,1,reversable defect,healthy
+51,female,type4,130,305,FALSE,type0,142,TRUE,1.2,2,0,reversable defect,not-healthy
+44,male,type3,120,226,FALSE,type0,169,FALSE,0,1,0,normal,healthy
+60,female,type1,150,240,FALSE,type0,171,FALSE,0.9,1,0,normal,healthy
+63,male,type1,145,233,TRUE,type2,150,FALSE,2.3,3,0,fixed defect,healthy
+57,male,type4,150,276,FALSE,type2,112,TRUE,0.6,2,1,fixed defect,not-healthy
+51,male,type4,140,261,FALSE,type2,186,TRUE,0,1,0,normal,healthy
+58,female,type2,136,319,TRUE,type2,152,FALSE,0,1,2,normal,not-healthy
+44,female,type3,118,242,FALSE,type0,149,FALSE,0.3,2,1,normal,healthy
+47,male,type3,108,243,FALSE,type0,152,FALSE,0,1,0,normal,not-healthy
+61,male,type4,120,260,FALSE,type0,140,TRUE,3.6,2,1,reversable defect,not-healthy
+57,female,type4,120,354,FALSE,type0,163,TRUE,0.6,1,0,normal,healthy
+70,male,type2,156,245,FALSE,type2,143,FALSE,0,1,0,normal,healthy
+76,female,type3,140,197,FALSE,type1,116,FALSE,1.1,2,0,normal,healthy
+67,female,type4,106,223,FALSE,type0,142,FALSE,0.3,1,2,normal,healthy
+45,male,type4,142,309,FALSE,type2,147,TRUE,0,2,3,reversable defect,not-healthy
+45,male,type4,104,208,FALSE,type2,148,TRUE,3,2,0,normal,healthy
+39,female,type3,94,199,FALSE,type0,179,FALSE,0,1,0,normal,healthy
+42,female,type3,120,209,FALSE,type0,173,FALSE,0,2,0,normal,healthy
+56,male,type2,120,236,FALSE,type0,178,FALSE,0.8,1,0,normal,healthy
+58,male,type4,146,218,FALSE,type0,105,FALSE,2,2,1,reversable defect,not-healthy
+35,male,type4,120,198,FALSE,type0,130,TRUE,1.6,2,0,reversable defect,not-healthy
+58,male,type4,150,270,FALSE,type2,111,TRUE,0.8,1,0,reversable defect,not-healthy
+41,male,type3,130,214,FALSE,type2,168,FALSE,2,2,0,normal,healthy
+57,male,type4,110,201,FALSE,type0,126,TRUE,1.5,2,0,fixed defect,healthy
+42,male,type1,148,244,FALSE,type2,178,FALSE,0.8,1,2,normal,healthy
+62,male,type2,128,208,TRUE,type2,140,FALSE,0,1,0,normal,healthy
+59,male,type1,178,270,FALSE,type2,145,FALSE,4.2,3,0,reversable defect,healthy
+41,female,type2,126,306,FALSE,type0,163,FALSE,0,1,0,normal,healthy
+50,male,type4,150,243,FALSE,type2,128,FALSE,2.6,2,0,reversable defect,not-healthy
+59,male,type2,140,221,FALSE,type0,164,TRUE,0,1,0,normal,healthy
+61,female,type4,130,330,FALSE,type2,169,FALSE,0,1,0,normal,not-healthy
+54,male,type4,124,266,FALSE,type2,109,TRUE,2.2,2,1,reversable defect,not-healthy
+54,male,type4,110,206,FALSE,type2,108,TRUE,0,2,1,normal,not-healthy
+52,male,type4,125,212,FALSE,type0,168,FALSE,1,1,2,reversable defect,not-healthy
+47,male,type4,110,275,FALSE,type2,118,TRUE,1,2,1,normal,not-healthy
+66,male,type4,120,302,FALSE,type2,151,FALSE,0.4,2,0,normal,healthy
+58,male,type4,100,234,FALSE,type0,156,FALSE,0.1,1,1,reversable defect,not-healthy
+64,female,type3,140,313,FALSE,type0,133,FALSE,0.2,1,0,reversable defect,healthy
+50,female,type2,120,244,FALSE,type0,162,FALSE,1.1,1,0,normal,healthy
+44,female,type3,108,141,FALSE,type0,175,FALSE,0.6,2,0,normal,healthy
+67,male,type4,120,237,FALSE,type0,71,FALSE,1,2,0,normal,not-healthy
+49,female,type4,130,269,FALSE,type0,163,FALSE,0,1,0,normal,healthy
+57,male,type4,165,289,TRUE,type2,124,FALSE,1,2,3,reversable defect,not-healthy
+63,male,type4,130,254,FALSE,type2,147,FALSE,1.4,2,1,reversable defect,not-healthy
+48,male,type4,124,274,FALSE,type2,166,FALSE,0.5,2,0,reversable defect,not-healthy
+51,male,type3,100,222,FALSE,type0,143,TRUE,1.2,2,0,normal,healthy
+60,female,type4,150,258,FALSE,type2,157,FALSE,2.6,2,2,reversable defect,not-healthy
+59,male,type4,140,177,FALSE,type0,162,TRUE,0,1,1,reversable defect,not-healthy
+45,female,type2,112,160,FALSE,type0,138,FALSE,0,2,0,normal,healthy
+55,female,type4,180,327,FALSE,type1,117,TRUE,3.4,2,0,normal,not-healthy
+41,male,type2,110,235,FALSE,type0,153,FALSE,0,1,0,normal,healthy
+60,female,type4,158,305,FALSE,type2,161,FALSE,0,1,0,normal,not-healthy
+54,female,type3,135,304,TRUE,type0,170,FALSE,0,1,0,normal,healthy
+42,male,type2,120,295,FALSE,type0,162,FALSE,0,1,0,normal,healthy
+49,female,type2,134,271,FALSE,type0,162,FALSE,0,2,0,normal,healthy
+46,male,type4,120,249,FALSE,type2,144,FALSE,0.8,1,0,reversable defect,not-healthy
+56,female,type4,200,288,TRUE,type2,133,TRUE,4,3,2,reversable defect,not-healthy
+66,female,type1,150,226,FALSE,type0,114,FALSE,2.6,3,0,normal,healthy
+56,male,type4,130,283,TRUE,type2,103,TRUE,1.6,3,0,reversable defect,not-healthy
+49,male,type3,120,188,FALSE,type0,139,FALSE,2,2,3,reversable defect,not-healthy
+54,male,type4,122,286,FALSE,type2,116,TRUE,3.2,2,2,normal,not-healthy
+57,male,type4,152,274,FALSE,type0,88,TRUE,1.2,2,1,reversable defect,not-healthy
+65,female,type3,160,360,FALSE,type2,151,FALSE,0.8,1,0,normal,healthy
+54,male,type3,125,273,FALSE,type2,152,FALSE,0.5,3,1,normal,healthy
+54,female,type3,160,201,FALSE,type0,163,FALSE,0,1,1,normal,healthy
+62,male,type4,120,267,FALSE,type0,99,TRUE,1.8,2,2,reversable defect,not-healthy
+52,female,type3,136,196,FALSE,type2,169,FALSE,0.1,2,0,normal,healthy
+52,male,type2,134,201,FALSE,type0,158,FALSE,0.8,1,1,normal,healthy
+60,male,type4,117,230,TRUE,type0,160,TRUE,1.4,1,2,reversable defect,not-healthy
+63,female,type4,108,269,FALSE,type0,169,TRUE,1.8,2,2,normal,not-healthy
+66,male,type4,112,212,FALSE,type2,132,TRUE,0.1,1,1,normal,not-healthy
+42,male,type4,140,226,FALSE,type0,178,FALSE,0,1,0,normal,healthy
+64,male,type4,120,246,FALSE,type2,96,TRUE,2.2,3,1,normal,not-healthy
+54,male,type3,150,232,FALSE,type2,165,FALSE,1.6,1,0,reversable defect,healthy
+46,female,type3,142,177,FALSE,type2,160,TRUE,1.4,3,0,normal,healthy
+67,female,type3,152,277,FALSE,type0,172,FALSE,0,1,1,normal,healthy
+56,male,type4,125,249,TRUE,type2,144,TRUE,1.2,2,1,normal,not-healthy
+34,female,type2,118,210,FALSE,type0,192,FALSE,0.7,1,0,normal,healthy
+57,male,type4,132,207,FALSE,type0,168,TRUE,0,1,0,reversable defect,healthy
+64,male,type4,145,212,FALSE,type2,132,FALSE,2,2,2,fixed defect,not-healthy
+59,male,type4,138,271,FALSE,type2,182,FALSE,0,1,0,normal,healthy
+50,male,type3,140,233,FALSE,type0,163,FALSE,0.6,2,1,reversable defect,not-healthy
+51,male,type1,125,213,FALSE,type2,125,TRUE,1.4,1,1,normal,healthy
+54,male,type2,192,283,FALSE,type2,195,FALSE,0,1,1,reversable defect,not-healthy
+53,male,type4,123,282,FALSE,type0,95,TRUE,2,2,2,reversable defect,not-healthy
+52,male,type4,112,230,FALSE,type0,160,FALSE,0,1,1,normal,not-healthy
+40,male,type4,110,167,FALSE,type2,114,TRUE,2,2,0,reversable defect,not-healthy
+58,male,type3,132,224,FALSE,type2,173,FALSE,3.2,1,2,reversable defect,not-healthy
+41,female,type3,112,268,FALSE,type2,172,TRUE,0,1,0,normal,healthy
+41,male,type3,112,250,FALSE,type0,179,FALSE,0,1,0,normal,healthy
+50,female,type3,120,219,FALSE,type0,158,FALSE,1.6,2,0,normal,healthy
+54,female,type3,108,267,FALSE,type2,167,FALSE,0,1,0,normal,healthy
+64,female,type4,130,303,FALSE,type0,122,FALSE,2,2,2,normal,healthy
+51,female,type3,130,256,FALSE,type2,149,FALSE,0.5,1,0,normal,healthy
+46,female,type2,105,204,FALSE,type0,172,FALSE,0,1,0,normal,healthy
+55,male,type4,140,217,FALSE,type0,111,TRUE,5.6,3,0,reversable defect,not-healthy
+45,male,type2,128,308,FALSE,type2,170,FALSE,0,1,0,normal,healthy
+56,male,type1,120,193,FALSE,type2,162,FALSE,1.9,2,0,reversable defect,healthy
+66,female,type4,178,228,TRUE,type0,165,TRUE,1,2,2,reversable defect,not-healthy
+38,male,type1,120,231,FALSE,type0,182,TRUE,3.8,2,0,reversable defect,not-healthy
+62,female,type4,150,244,FALSE,type0,154,TRUE,1.4,2,0,normal,not-healthy
+55,male,type2,130,262,FALSE,type0,155,FALSE,0,1,0,normal,healthy
+58,male,type4,128,259,FALSE,type2,130,TRUE,3,2,2,reversable defect,not-healthy
+43,male,type4,110,211,FALSE,type0,161,FALSE,0,1,0,reversable defect,healthy
+64,female,type4,180,325,FALSE,type0,154,TRUE,0,1,0,normal,healthy
+50,female,type4,110,254,FALSE,type2,159,FALSE,0,1,0,normal,healthy
+53,male,type3,130,197,TRUE,type2,152,FALSE,1.2,3,0,normal,healthy
+45,female,type4,138,236,FALSE,type2,152,TRUE,0.2,2,0,normal,healthy
+65,male,type1,138,282,TRUE,type2,174,FALSE,1.4,2,1,normal,not-healthy
+69,male,type1,160,234,TRUE,type2,131,FALSE,0.1,2,1,normal,healthy
+69,male,type3,140,254,FALSE,type2,146,FALSE,2,2,3,reversable defect,not-healthy
+67,male,type4,100,299,FALSE,type2,125,TRUE,0.9,2,2,normal,not-healthy
+68,female,type3,120,211,FALSE,type2,115,FALSE,1.5,2,0,normal,healthy
+34,male,type1,118,182,FALSE,type2,174,FALSE,0,1,0,normal,healthy
+62,female,type4,138,294,TRUE,type0,106,FALSE,1.9,2,3,normal,not-healthy
+51,male,type4,140,298,FALSE,type0,122,TRUE,4.2,2,3,reversable defect,not-healthy
+46,male,type3,150,231,FALSE,type0,147,FALSE,3.6,2,0,normal,not-healthy
+67,male,type4,125,254,TRUE,type0,163,FALSE,0.2,2,2,reversable defect,not-healthy
+50,male,type3,129,196,FALSE,type0,163,FALSE,0,1,0,normal,healthy
+42,male,type3,120,240,TRUE,type0,194,FALSE,0.8,3,0,reversable defect,healthy
+56,female,type4,134,409,FALSE,type2,150,TRUE,1.9,2,2,reversable defect,not-healthy
+41,male,type4,110,172,FALSE,type2,158,FALSE,0,1,0,reversable defect,not-healthy
+42,female,type4,102,265,FALSE,type2,122,FALSE,0.6,2,0,normal,healthy
+53,male,type3,130,246,TRUE,type2,173,FALSE,0,1,3,normal,healthy
+43,male,type3,130,315,FALSE,type0,162,FALSE,1.9,1,1,normal,healthy
+56,male,type4,132,184,FALSE,type2,105,TRUE,2.1,2,1,fixed defect,not-healthy
+52,male,type4,108,233,TRUE,type0,147,FALSE,0.1,1,3,reversable defect,healthy
+62,female,type4,140,394,FALSE,type2,157,FALSE,1.2,2,0,normal,healthy
+70,male,type3,160,269,FALSE,type0,112,TRUE,2.9,2,1,reversable defect,not-healthy
+54,male,type4,140,239,FALSE,type0,160,FALSE,1.2,1,0,normal,healthy
+70,male,type4,145,174,FALSE,type0,125,TRUE,2.6,3,0,reversable defect,not-healthy
+54,male,type2,108,309,FALSE,type0,156,FALSE,0,1,0,reversable defect,healthy
+35,male,type4,126,282,FALSE,type2,156,TRUE,0,1,0,reversable defect,not-healthy
+48,male,type3,124,255,TRUE,type0,175,FALSE,0,1,2,normal,healthy
+55,female,type2,135,250,FALSE,type2,161,FALSE,1.4,2,0,normal,healthy
+58,female,type4,100,248,FALSE,type2,122,FALSE,1,2,0,normal,healthy
+54,female,type3,110,214,FALSE,type0,158,FALSE,1.6,2,0,normal,healthy
+69,female,type1,140,239,FALSE,type0,151,FALSE,1.8,1,2,normal,healthy
+77,male,type4,125,304,FALSE,type2,162,TRUE,0,1,3,normal,not-healthy
+68,male,type3,118,277,FALSE,type0,151,FALSE,1,1,1,reversable defect,healthy
+58,male,type4,125,300,FALSE,type2,171,FALSE,0,1,2,reversable defect,not-healthy
+60,male,type4,125,258,FALSE,type2,141,TRUE,2.8,2,1,reversable defect,not-healthy
+51,male,type4,140,299,FALSE,type0,173,TRUE,1.6,1,0,reversable defect,not-healthy
+55,male,type4,160,289,FALSE,type2,145,TRUE,0.8,2,1,reversable defect,not-healthy
+52,male,type1,152,298,TRUE,type0,178,FALSE,1.2,2,0,reversable defect,healthy
+60,female,type3,102,318,FALSE,type0,160,FALSE,0,1,1,normal,healthy
+58,male,type3,105,240,FALSE,type2,154,TRUE,0.6,2,0,reversable defect,healthy
+64,male,type3,125,309,FALSE,type0,131,TRUE,1.8,2,0,reversable defect,not-healthy
+37,male,type3,130,250,FALSE,type0,187,FALSE,3.5,3,0,normal,healthy
+59,male,type1,170,288,FALSE,type2,159,FALSE,0.2,2,0,reversable defect,not-healthy
+51,male,type3,125,245,TRUE,type2,166,FALSE,2.4,2,0,normal,healthy
+43,female,type3,122,213,FALSE,type0,165,FALSE,0.2,2,0,normal,healthy
+58,male,type4,128,216,FALSE,type2,131,TRUE,2.2,2,3,reversable defect,not-healthy
+29,male,type2,130,204,FALSE,type2,202,FALSE,0,1,0,normal,healthy
+41,female,type2,130,204,FALSE,type2,172,FALSE,1.4,1,0,normal,healthy
+63,female,type3,135,252,FALSE,type2,172,FALSE,0,1,0,normal,healthy
+51,male,type3,94,227,FALSE,type0,154,TRUE,0,1,1,reversable defect,healthy
+54,male,type3,120,258,FALSE,type2,147,FALSE,0.4,2,0,reversable defect,healthy
+44,male,type2,120,220,FALSE,type0,170,FALSE,0,1,0,normal,healthy
+54,male,type4,110,239,FALSE,type0,126,TRUE,2.8,2,1,reversable defect,not-healthy
+65,male,type4,135,254,FALSE,type2,127,FALSE,2.8,2,1,reversable defect,not-healthy
+57,male,type3,150,168,FALSE,type0,174,FALSE,1.6,1,0,normal,healthy
+63,male,type4,130,330,TRUE,type2,132,TRUE,1.8,1,3,reversable defect,not-healthy
+35,female,type4,138,183,FALSE,type0,182,FALSE,1.4,1,0,normal,healthy
+41,male,type2,135,203,FALSE,type0,132,FALSE,0,2,0,fixed defect,healthy
+62,female,type3,130,263,FALSE,type0,97,FALSE,1.2,2,1,reversable defect,not-healthy
+43,female,type4,132,341,TRUE,type2,136,TRUE,3,2,0,reversable defect,not-healthy
+58,female,type1,150,283,TRUE,type2,162,FALSE,1,1,0,normal,healthy
+52,male,type1,118,186,FALSE,type2,190,FALSE,0,2,0,fixed defect,healthy
+61,female,type4,145,307,FALSE,type2,146,TRUE,1,2,0,reversable defect,not-healthy
+39,male,type4,118,219,FALSE,type0,140,FALSE,1.2,2,0,reversable defect,not-healthy
+45,male,type4,115,260,FALSE,type2,185,FALSE,0,1,0,normal,healthy
+52,male,type4,128,255,FALSE,type0,161,TRUE,0,1,1,reversable defect,not-healthy
+62,male,type3,130,231,FALSE,type0,146,FALSE,1.8,2,3,reversable defect,healthy
+62,female,type4,160,164,FALSE,type2,145,FALSE,6.2,3,3,reversable defect,not-healthy
+53,female,type4,138,234,FALSE,type2,160,FALSE,0,1,0,normal,healthy
+43,male,type4,120,177,FALSE,type2,120,TRUE,2.5,2,0,reversable defect,not-healthy
+47,male,type3,138,257,FALSE,type2,156,FALSE,0,1,0,normal,healthy
+52,male,type2,120,325,FALSE,type0,172,FALSE,0.2,1,0,normal,healthy
+68,male,type3,180,274,TRUE,type2,150,TRUE,1.6,2,0,reversable defect,not-healthy
+39,male,type3,140,321,FALSE,type2,182,FALSE,0,1,0,normal,healthy
+53,female,type4,130,264,FALSE,type2,143,FALSE,0.4,2,0,normal,healthy
+62,female,type4,140,268,FALSE,type2,160,FALSE,3.6,3,2,normal,not-healthy
+51,female,type3,140,308,FALSE,type2,142,FALSE,1.5,1,1,normal,healthy
+60,male,type4,130,253,FALSE,type0,144,TRUE,1.4,1,1,reversable defect,not-healthy
+65,male,type4,110,248,FALSE,type2,158,FALSE,0.6,1,2,fixed defect,not-healthy
+65,female,type3,155,269,FALSE,type0,148,FALSE,0.8,1,0,normal,healthy
+60,male,type3,140,185,FALSE,type2,155,FALSE,3,2,0,normal,not-healthy
+60,male,type4,145,282,FALSE,type2,142,TRUE,2.8,2,2,reversable defect,not-healthy
+54,male,type4,120,188,FALSE,type0,113,FALSE,1.4,2,1,reversable defect,not-healthy
+44,male,type2,130,219,FALSE,type2,188,FALSE,0,1,0,normal,healthy
+44,male,type4,112,290,FALSE,type2,153,FALSE,0,1,1,normal,not-healthy
+51,male,type3,110,175,FALSE,type0,123,FALSE,0.6,1,0,normal,healthy
+59,male,type3,150,212,TRUE,type0,157,FALSE,1.6,1,0,normal,healthy
+71,female,type2,160,302,FALSE,type0,162,FALSE,0.4,1,2,normal,healthy
+61,male,type3,150,243,TRUE,type0,137,TRUE,1,2,0,normal,healthy
+55,male,type4,132,353,FALSE,type0,132,TRUE,1.2,2,1,reversable defect,not-healthy
+64,male,type3,140,335,FALSE,type0,158,FALSE,0,1,0,normal,not-healthy
+43,male,type4,150,247,FALSE,type0,171,FALSE,1.5,1,0,normal,healthy
+58,female,type3,120,340,FALSE,type0,172,FALSE,0,1,0,normal,healthy
+60,male,type4,130,206,FALSE,type2,132,TRUE,2.4,2,2,reversable defect,not-healthy
+58,male,type2,120,284,FALSE,type2,160,FALSE,1.8,2,0,normal,not-healthy
+49,male,type2,130,266,FALSE,type0,171,FALSE,0.6,1,0,normal,healthy
+48,male,type2,110,229,FALSE,type0,168,FALSE,1,3,0,reversable defect,not-healthy
+52,male,type3,172,199,TRUE,type0,162,FALSE,0.5,1,0,reversable defect,healthy
+44,male,type2,120,263,FALSE,type0,173,FALSE,0,1,0,reversable defect,healthy
+56,female,type2,140,294,FALSE,type2,153,FALSE,1.3,2,0,normal,healthy
+57,male,type4,140,192,FALSE,type0,148,FALSE,0.4,2,0,fixed defect,healthy
+67,male,type4,160,286,FALSE,type2,108,TRUE,1.5,2,3,normal,not-healthy
