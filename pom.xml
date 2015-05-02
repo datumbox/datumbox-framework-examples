@@ -24,8 +24,8 @@
     
     <packaging>jar</packaging>
     
-    <name>Datumbox Machine Learning Framework Examples</name>
-    <description>Examples of how to use the Datumbox Machine Learning Framework.</description>
+    <name>Code Examples for Datumbox Machine Learning Framework</name>
+    <description>Code examples on how to use the Datumbox Machine Learning Framework.</description>
     <url>https://github.com/datumbox/datumbox-framework-examples/</url>
     <organization>
     	<name>Datumbox</name>
