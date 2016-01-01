@@ -78,7 +78,7 @@
     
     <properties>
         <!-- Code Dependencies -->
-        <datumbox-framework-version>0.6.0</datumbox-framework-version>
+        <datumbox-framework-version>0.6.1-SNAPSHOT</datumbox-framework-version>
         <logback-classic-version>1.1.3</logback-classic-version>
         
         <!-- Configuration -->
