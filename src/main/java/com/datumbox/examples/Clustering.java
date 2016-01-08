@@ -15,7 +15,7 @@
  */
 package com.datumbox.examples;
 
-import com.datumbox.common.dataobjects.Dataset;
+import com.datumbox.common.dataobjects.Dataframe;
 import com.datumbox.common.dataobjects.Record;
 import com.datumbox.common.dataobjects.TypeInference;
 import com.datumbox.common.persistentstorage.ConfigurationFactory;
@@ -24,9 +24,11 @@ import com.datumbox.common.utilities.PHPfunctions;
 import com.datumbox.common.utilities.RandomGenerator;
 import com.datumbox.framework.machinelearning.clustering.Kmeans;
 import com.datumbox.framework.machinelearning.datatransformation.DummyXMinMaxNormalizer;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -46,10 +48,8 @@ public class Clustering {
      * reduction.
      * 
      * @param args the command line arguments
-     * @throws java.io.FileNotFoundException
-     * @throws java.net.URISyntaxException
      */
-    public static void main(String[] args) throws FileNotFoundException, URISyntaxException {  
+    public static void main(String[] args) {  
         /**
          * There are two configuration files in the resources folder:
          * 
@@ -67,33 +67,38 @@ public class Clustering {
         
         //Reading Data
         //------------
-        Reader fileReader = new FileReader(Paths.get(Clustering.class.getClassLoader().getResource("datasets/heart-desease/heart.csv").toURI()).toFile());
-
-        Map<String, TypeInference.DataType> headerDataTypes = new HashMap<>();
-        headerDataTypes.put("Age", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("Sex", TypeInference.DataType.CATEGORICAL);
-        headerDataTypes.put("ChestPain", TypeInference.DataType.CATEGORICAL);
-        headerDataTypes.put("RestBP", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("Cholesterol", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("BloodSugar", TypeInference.DataType.BOOLEAN);
-        headerDataTypes.put("ECG", TypeInference.DataType.CATEGORICAL); 
-        headerDataTypes.put("MaxHeartRate", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("Angina", TypeInference.DataType.BOOLEAN);
-        headerDataTypes.put("OldPeak", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("STSlope", TypeInference.DataType.ORDINAL);
-        headerDataTypes.put("Vessels", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("Thal", TypeInference.DataType.CATEGORICAL);
-        headerDataTypes.put("Class", TypeInference.DataType.CATEGORICAL);
-        Dataset trainingDataset = Dataset.Builder.parseCSVFile(fileReader, "Class", headerDataTypes, ',', '"', "\r\n", dbConf);
-        Dataset testingDataset = trainingDataset.copy();
+        Dataframe trainingDataframe;
+        try (Reader fileReader = new InputStreamReader(new FileInputStream(Paths.get(Clustering.class.getClassLoader().getResource("datasets/heart-desease/heart.csv").toURI()).toFile()), "UTF-8")) {
+            Map<String, TypeInference.DataType> headerDataTypes = new HashMap<>();
+            headerDataTypes.put("Age", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("Sex", TypeInference.DataType.CATEGORICAL);
+            headerDataTypes.put("ChestPain", TypeInference.DataType.CATEGORICAL);
+            headerDataTypes.put("RestBP", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("Cholesterol", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("BloodSugar", TypeInference.DataType.BOOLEAN);
+            headerDataTypes.put("ECG", TypeInference.DataType.CATEGORICAL); 
+            headerDataTypes.put("MaxHeartRate", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("Angina", TypeInference.DataType.BOOLEAN);
+            headerDataTypes.put("OldPeak", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("STSlope", TypeInference.DataType.ORDINAL);
+            headerDataTypes.put("Vessels", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("Thal", TypeInference.DataType.CATEGORICAL);
+            headerDataTypes.put("Class", TypeInference.DataType.CATEGORICAL);
+            
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Class", headerDataTypes, ',', '"', "\r\n", dbConf);
+        }
+        catch(UncheckedIOException | IOException | URISyntaxException ex) {
+            throw new RuntimeException(ex);
+        }
+        Dataframe testingDataframe = trainingDataframe.copy();
         
         
-        //Transform Dataset
+        //Transform Dataframe
         //-----------------
         
         //Convert Categorical variables to dummy variables (boolean) and normalize continuous variables
         DummyXMinMaxNormalizer dataTransformer = new DummyXMinMaxNormalizer("HeartDesease", dbConf);
-        dataTransformer.fit_transform(trainingDataset, new DummyXMinMaxNormalizer.TrainingParameters());
+        dataTransformer.fit_transform(trainingDataframe, new DummyXMinMaxNormalizer.TrainingParameters());
         
         
         
@@ -111,10 +116,10 @@ public class Clustering {
         param.setCategoricalGamaMultiplier(1.0);
         param.setSubsetFurthestFirstcValue(2.0);
         
-        clusterer.fit(trainingDataset, param);
+        clusterer.fit(trainingDataframe, param);
         
-        //Denormalize trainingDataset (optional)
-        dataTransformer.denormalize(trainingDataset);
+        //Denormalize trainingDataframe (optional)
+        dataTransformer.denormalize(trainingDataframe);
         
         System.out.println("Cluster assignments (Record Ids):");
         for(Map.Entry<Integer, Kmeans.Cluster> entry: clusterer.getClusters().entrySet()) {
@@ -129,19 +134,20 @@ public class Clustering {
         //Use the clusterer
         //-----------------
         
-        //Apply the same transformations on testingDataset
-        dataTransformer.transform(testingDataset);
+        //Apply the same transformations on testingDataframe
+        dataTransformer.transform(testingDataframe);
         
         //Get validation metrics on the training set
-        Kmeans.ValidationMetrics vm = clusterer.validate(testingDataset);
+        Kmeans.ValidationMetrics vm = clusterer.validate(testingDataframe);
         clusterer.setValidationMetrics(vm); //store them in the model for future reference
         
-        //Denormalize testingDataset (optional)
-        dataTransformer.denormalize(testingDataset);
+        //Denormalize testingDataframe (optional)
+        dataTransformer.denormalize(testingDataframe);
         
         System.out.println("Results:");
-        for(Integer rId: testingDataset) {
-            Record r = testingDataset.get(rId);
+        for(Map.Entry<Integer, Record> entry: testingDataframe.entries()) {
+            Integer rId = entry.getKey();
+            Record r = entry.getValue();
             System.out.println("Record "+rId+" - Original Y: "+r.getY()+", Predicted Cluster Id: "+r.getYPredicted());
         }
         
@@ -153,12 +159,12 @@ public class Clustering {
         //--------
         
         //Erase data transformer, clusterer.
-        dataTransformer.erase();
-        clusterer.erase();
+        dataTransformer.delete();
+        clusterer.delete();
         
-        //Erase datasets.
-        trainingDataset.erase();
-        testingDataset.erase();
+        //Erase Dataframes.
+        trainingDataframe.delete();
+        testingDataframe.delete();
     }
     
 }

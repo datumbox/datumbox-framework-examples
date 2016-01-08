@@ -16,7 +16,7 @@
 package com.datumbox.examples;
 
 import com.datumbox.applications.datamodeling.Modeler;
-import com.datumbox.common.dataobjects.Dataset;
+import com.datumbox.common.dataobjects.Dataframe;
 import com.datumbox.common.dataobjects.Record;
 import com.datumbox.common.dataobjects.TypeInference;
 import com.datumbox.common.persistentstorage.ConfigurationFactory;
@@ -26,9 +26,11 @@ import com.datumbox.common.utilities.RandomGenerator;
 import com.datumbox.framework.machinelearning.common.bases.mlmodels.BaseMLmodel;
 import com.datumbox.framework.machinelearning.datatransformation.DummyXYMinMaxNormalizer;
 import com.datumbox.framework.machinelearning.regression.NLMS;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -45,10 +47,8 @@ public class DataModeling {
      * Example of how to use the Modeler class.
      * 
      * @param args the command line arguments
-     * @throws java.io.FileNotFoundException
-     * @throws java.net.URISyntaxException
      */
-    public static void main(String[] args) throws FileNotFoundException, URISyntaxException {      
+    public static void main(String[] args) {      
         /**
          * There are two configuration files in the resources folder:
          * 
@@ -66,18 +66,23 @@ public class DataModeling {
         
         //Reading Data
         //------------
-        Reader fileReader = new FileReader(Paths.get(DataModeling.class.getClassLoader().getResource("datasets/labor-statistics/longley.csv").toURI()).toFile());
-
-        Map<String, TypeInference.DataType> headerDataTypes = new HashMap<>();
-        headerDataTypes.put("Employed", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("GNP.deflator", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("GNP", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("Unemployed", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("Armed.Forces", TypeInference.DataType.NUMERICAL);  
-        headerDataTypes.put("Population", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("Year", TypeInference.DataType.NUMERICAL); 
-        Dataset trainingDataset = Dataset.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", dbConf);
-        Dataset testingDataset = trainingDataset.copy();
+        Dataframe trainingDataframe;
+        try (Reader fileReader = new InputStreamReader(new FileInputStream(Paths.get(Clustering.class.getClassLoader().getResource("datasets/labor-statistics/longley.csv").toURI()).toFile()), "UTF-8")) {
+            Map<String, TypeInference.DataType> headerDataTypes = new HashMap<>();
+            headerDataTypes.put("Employed", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("GNP.deflator", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("GNP", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("Unemployed", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("Armed.Forces", TypeInference.DataType.NUMERICAL);  
+            headerDataTypes.put("Population", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("Year", TypeInference.DataType.NUMERICAL); 
+            
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", dbConf);
+        }
+        catch(UncheckedIOException | IOException | URISyntaxException ex) {
+            throw new RuntimeException(ex);
+        }
+        Dataframe testingDataframe = trainingDataframe.copy();
         
         
         
@@ -102,7 +107,7 @@ public class DataModeling {
         //Fit the modeler
         //---------------
         Modeler modeler = new Modeler("LaborStatistics", dbConf);
-        modeler.fit(trainingDataset, trainingParameters);
+        modeler.fit(trainingDataframe, trainingParameters);
         
         
         
@@ -110,15 +115,16 @@ public class DataModeling {
         //---------------
         
         //Get validation metrics on the training set
-        BaseMLmodel.ValidationMetrics vm = modeler.validate(trainingDataset);
+        BaseMLmodel.ValidationMetrics vm = modeler.validate(trainingDataframe);
         modeler.setValidationMetrics(vm); //store them in the model for future reference
         
-        //Predict a new dataset
-        modeler.predict(testingDataset);
+        //Predict a new Dataframe
+        modeler.predict(testingDataframe);
         
         System.out.println("Test Results:");
-        for(Integer rId: testingDataset) {
-            Record r = testingDataset.get(rId);
+        for(Map.Entry<Integer, Record> entry: testingDataframe.entries()) {
+            Integer rId = entry.getKey();
+            Record r = entry.getValue();
             System.out.println("Record "+rId+" - Real Y: "+r.getY()+", Predicted Y: "+r.getYPredicted());
         }
         
@@ -130,11 +136,11 @@ public class DataModeling {
         //--------
         
         //Erase the modeler. This removes all files.
-        modeler.erase();
+        modeler.delete();
         
-        //Erase datasets.
-        trainingDataset.erase();
-        testingDataset.erase();
+        //Erase Dataframes.
+        trainingDataframe.delete();
+        testingDataframe.delete();
     }
     
 }

@@ -15,7 +15,7 @@
  */
 package com.datumbox.examples;
 
-import com.datumbox.common.dataobjects.Dataset;
+import com.datumbox.common.dataobjects.Dataframe;
 import com.datumbox.common.dataobjects.Record;
 import com.datumbox.common.dataobjects.TypeInference;
 import com.datumbox.common.persistentstorage.ConfigurationFactory;
@@ -25,10 +25,11 @@ import com.datumbox.common.utilities.RandomGenerator;
 import com.datumbox.framework.machinelearning.datatransformation.XYMinMaxNormalizer;
 import com.datumbox.framework.machinelearning.featureselection.continuous.PCA;
 import com.datumbox.framework.machinelearning.regression.MatrixLinearRegression;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -48,10 +49,8 @@ public class Regression {
      * reduction.
      * 
      * @param args the command line arguments
-     * @throws java.io.FileNotFoundException
-     * @throws java.net.URISyntaxException
      */
-    public static void main(String[] args) throws FileNotFoundException, URISyntaxException, IOException {   
+    public static void main(String[] args) {   
         /**
          * There are two configuration files in the resources folder:
          * 
@@ -69,26 +68,31 @@ public class Regression {
         
         //Reading Data
         //------------
-        Reader fileReader = new FileReader(Paths.get(DataModeling.class.getClassLoader().getResource("datasets/labor-statistics/longley.csv").toURI()).toFile());
-
-        Map<String, TypeInference.DataType> headerDataTypes = new HashMap<>();
-        headerDataTypes.put("Employed", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("GNP.deflator", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("GNP", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("Unemployed", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("Armed.Forces", TypeInference.DataType.NUMERICAL);  
-        headerDataTypes.put("Population", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("Year", TypeInference.DataType.NUMERICAL); 
-        Dataset trainingDataset = Dataset.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", dbConf);
-        Dataset testingDataset = trainingDataset.copy();
+        Dataframe trainingDataframe;
+        try (Reader fileReader = new InputStreamReader(new FileInputStream(Paths.get(Clustering.class.getClassLoader().getResource("datasets/labor-statistics/longley.csv").toURI()).toFile()), "UTF-8")) {
+            Map<String, TypeInference.DataType> headerDataTypes = new HashMap<>();
+            headerDataTypes.put("Employed", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("GNP.deflator", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("GNP", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("Unemployed", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("Armed.Forces", TypeInference.DataType.NUMERICAL);  
+            headerDataTypes.put("Population", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("Year", TypeInference.DataType.NUMERICAL); 
+            
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", dbConf);
+        }
+        catch(UncheckedIOException | IOException | URISyntaxException ex) {
+            throw new RuntimeException(ex);
+        }
+        Dataframe testingDataframe = trainingDataframe.copy();
         
         
-        //Transform Dataset
+        //Transform Dataframe
         //-----------------
         
         //Normalize continuous variables
         XYMinMaxNormalizer dataTransformer = new XYMinMaxNormalizer("LaborStatistics", dbConf);
-        dataTransformer.fit_transform(trainingDataset, new XYMinMaxNormalizer.TrainingParameters());
+        dataTransformer.fit_transform(trainingDataframe, new XYMinMaxNormalizer.TrainingParameters());
         
 
 
@@ -99,10 +103,10 @@ public class Regression {
         
         PCA featureSelection = new PCA("LaborStatistics", dbConf);
         PCA.TrainingParameters featureSelectionParameters = new PCA.TrainingParameters();
-        featureSelectionParameters.setMaxDimensions(trainingDataset.getVariableNumber()-1); //remove one dimension
+        featureSelectionParameters.setMaxDimensions(trainingDataframe.xColumnSize()-1); //remove one dimension
         featureSelectionParameters.setWhitened(false);
         featureSelectionParameters.setVariancePercentageThreshold(0.99999995);
-        featureSelection.fit_transform(trainingDataset, featureSelectionParameters);
+        featureSelection.fit_transform(trainingDataframe, featureSelectionParameters);
         
         
         
@@ -113,32 +117,33 @@ public class Regression {
         
         MatrixLinearRegression.TrainingParameters param = new MatrixLinearRegression.TrainingParameters();
         
-        regressor.fit(trainingDataset, param);
+        regressor.fit(trainingDataframe, param);
         
-        //Denormalize trainingDataset (optional)
-        dataTransformer.denormalize(trainingDataset);
+        //Denormalize trainingDataframe (optional)
+        dataTransformer.denormalize(trainingDataframe);
         
         
         
         //Use the regressor
         //------------------
         
-        //Apply the same data transformations on testingDataset 
-        dataTransformer.transform(testingDataset);
+        //Apply the same data transformations on testingDataframe 
+        dataTransformer.transform(testingDataframe);
         
-        //Apply the same featureSelection transformations on testingDataset
-        featureSelection.transform(testingDataset);
+        //Apply the same featureSelection transformations on testingDataframe
+        featureSelection.transform(testingDataframe);
         
         //Get validation metrics on the training set
-        MatrixLinearRegression.ValidationMetrics vm = regressor.validate(testingDataset);
+        MatrixLinearRegression.ValidationMetrics vm = regressor.validate(testingDataframe);
         regressor.setValidationMetrics(vm); //store them in the model for future reference
         
-        //Denormalize testingDataset (optional)
-        dataTransformer.denormalize(testingDataset);
+        //Denormalize testingDataframe (optional)
+        dataTransformer.denormalize(testingDataframe);
         
         System.out.println("Results:");
-        for(Integer rId: testingDataset) {
-            Record r = testingDataset.get(rId);
+        for(Map.Entry<Integer, Record> entry: testingDataframe.entries()) {
+            Integer rId = entry.getKey();
+            Record r = entry.getValue();
             System.out.println("Record "+rId+" - Real Y: "+r.getY()+", Predicted Y: "+r.getYPredicted());
         }
         
@@ -150,13 +155,13 @@ public class Regression {
         //--------
         
         //Erase data transformer, featureselector and regressor.
-        dataTransformer.erase();
-        featureSelection.erase();
-        regressor.erase();
+        dataTransformer.delete();
+        featureSelection.delete();
+        regressor.delete();
         
-        //Erase datasets.
-        trainingDataset.erase();
-        testingDataset.erase();
+        //Erase Dataframes.
+        trainingDataframe.delete();
+        testingDataframe.delete();
     }
     
 }

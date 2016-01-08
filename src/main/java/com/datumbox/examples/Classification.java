@@ -15,7 +15,7 @@
  */
 package com.datumbox.examples;
 
-import com.datumbox.common.dataobjects.Dataset;
+import com.datumbox.common.dataobjects.Dataframe;
 import com.datumbox.common.dataobjects.Record;
 import com.datumbox.common.dataobjects.TypeInference;
 import com.datumbox.common.persistentstorage.ConfigurationFactory;
@@ -27,10 +27,10 @@ import com.datumbox.framework.machinelearning.datatransformation.XMinMaxNormaliz
 import com.datumbox.framework.machinelearning.featureselection.continuous.PCA;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -51,10 +51,8 @@ public class Classification {
      * reduction.
      * 
      * @param args the command line arguments
-     * @throws java.io.FileNotFoundException
-     * @throws java.net.URISyntaxException
      */
-    public static void main(String[] args) throws FileNotFoundException, URISyntaxException, IOException { 
+    public static void main(String[] args) { 
         /**
          * There are two configuration files in the resources folder:
          * 
@@ -72,30 +70,34 @@ public class Classification {
         
         //Reading Data
         //------------
-        Reader fileReader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(Paths.get(Classification.class.getClassLoader().getResource("datasets/diabetes/diabetes.tsv.gz").toURI()).toFile()))));
+        Dataframe trainingDataframe;
+        try (Reader fileReader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(Paths.get(Classification.class.getClassLoader().getResource("datasets/diabetes/diabetes.tsv.gz").toURI()).toFile())), "UTF-8"))) {
+            Map<String, TypeInference.DataType> headerDataTypes = new HashMap<>();
+            headerDataTypes.put("pregnancies", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("plasma glucose", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("blood pressure", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("triceps thickness", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("serum insulin", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("bmi", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("dpf", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("age", TypeInference.DataType.NUMERICAL);
+            headerDataTypes.put("test result", TypeInference.DataType.CATEGORICAL);
 
-        Map<String, TypeInference.DataType> headerDataTypes = new HashMap<>();
-        headerDataTypes.put("pregnancies", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("plasma glucose", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("blood pressure", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("triceps thickness", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("serum insulin", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("bmi", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("dpf", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("age", TypeInference.DataType.NUMERICAL);
-        headerDataTypes.put("test result", TypeInference.DataType.CATEGORICAL);
+
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "test result", headerDataTypes, '\t', '"', "\r\n", dbConf);
+        }
+        catch(UncheckedIOException | IOException | URISyntaxException ex) {
+            throw new RuntimeException(ex);
+        }
+        Dataframe testingDataframe = trainingDataframe.copy();
         
         
-        Dataset trainingDataset = Dataset.Builder.parseCSVFile(fileReader, "test result", headerDataTypes, '\t', '"', "\r\n", dbConf);
-        Dataset testingDataset = trainingDataset.copy();
-        
-        
-        //Transform Dataset
+        //Transform Dataframe
         //-----------------
         
         //Normalize continuous variables
         XMinMaxNormalizer dataTransformer = new XMinMaxNormalizer("Diabetes", dbConf);
-        dataTransformer.fit_transform(trainingDataset, new XMinMaxNormalizer.TrainingParameters());
+        dataTransformer.fit_transform(trainingDataframe, new XMinMaxNormalizer.TrainingParameters());
         
 
 
@@ -106,10 +108,10 @@ public class Classification {
         
         PCA featureSelection = new PCA("Diabetes", dbConf);
         PCA.TrainingParameters featureSelectionParameters = new PCA.TrainingParameters();
-        featureSelectionParameters.setMaxDimensions(trainingDataset.getVariableNumber()-1); //remove one dimension
+        featureSelectionParameters.setMaxDimensions(trainingDataframe.xColumnSize()-1); //remove one dimension
         featureSelectionParameters.setWhitened(false);
         featureSelectionParameters.setVariancePercentageThreshold(0.99999995);
-        featureSelection.fit_transform(trainingDataset, featureSelectionParameters);
+        featureSelection.fit_transform(trainingDataframe, featureSelectionParameters);
         
         
         
@@ -122,31 +124,32 @@ public class Classification {
         param.setTotalIterations(200);
         param.setLearningRate(0.1);
         
-        classifier.fit(trainingDataset, param);
+        classifier.fit(trainingDataframe, param);
         
-        //Denormalize trainingDataset (optional)
-        dataTransformer.denormalize(trainingDataset);
+        //Denormalize trainingDataframe (optional)
+        dataTransformer.denormalize(trainingDataframe);
         
         
         //Use the classifier
         //------------------
         
-        //Apply the same data transformations on testingDataset 
-        dataTransformer.transform(testingDataset);
+        //Apply the same data transformations on testingDataframe 
+        dataTransformer.transform(testingDataframe);
         
-        //Apply the same featureSelection transformations on testingDataset
-        featureSelection.transform(testingDataset);
+        //Apply the same featureSelection transformations on testingDataframe
+        featureSelection.transform(testingDataframe);
         
         //Get validation metrics on the training set
-        SoftMaxRegression.ValidationMetrics vm = classifier.validate(testingDataset);
+        SoftMaxRegression.ValidationMetrics vm = classifier.validate(testingDataframe);
         classifier.setValidationMetrics(vm); //store them in the model for future reference
         
-        //Denormalize testingDataset (optional)
-        dataTransformer.denormalize(testingDataset);
+        //Denormalize testingDataframe (optional)
+        dataTransformer.denormalize(testingDataframe);
         
         System.out.println("Results:");
-        for(Integer rId: testingDataset) {
-            Record r = testingDataset.get(rId);
+        for(Map.Entry<Integer, Record> entry: testingDataframe.entries()) {
+            Integer rId = entry.getKey();
+            Record r = entry.getValue();
             System.out.println("Record "+rId+" - Real Y: "+r.getY()+", Predicted Y: "+r.getYPredicted());
         }
         
@@ -158,13 +161,13 @@ public class Classification {
         //--------
         
         //Erase data transformer, featureselector and classifier.
-        dataTransformer.erase();
-        featureSelection.erase();
-        classifier.erase();
+        dataTransformer.delete();
+        featureSelection.delete();
+        classifier.delete();
         
-        //Erase datasets.
-        trainingDataset.erase();
-        testingDataset.erase();
+        //Erase Dataframes.
+        trainingDataframe.delete();
+        testingDataframe.delete();
     }
     
 }
