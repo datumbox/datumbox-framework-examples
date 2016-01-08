@@ -158,11 +158,11 @@ public class Clustering {
         //Clean up
         //--------
         
-        //Erase data transformer, clusterer.
+        //Delete data transformer, clusterer.
         dataTransformer.delete();
         clusterer.delete();
         
-        //Erase Dataframes.
+        //Delete Dataframes.
         trainingDataframe.delete();
         testingDataframe.delete();
     }

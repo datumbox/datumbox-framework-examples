@@ -83,7 +83,6 @@ public class Classification {
             headerDataTypes.put("age", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("test result", TypeInference.DataType.CATEGORICAL);
 
-
             trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "test result", headerDataTypes, '\t', '"', "\r\n", dbConf);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
@@ -160,12 +159,12 @@ public class Classification {
         //Clean up
         //--------
         
-        //Erase data transformer, featureselector and classifier.
+        //Delete data transformer, featureselector and classifier.
         dataTransformer.delete();
         featureSelection.delete();
         classifier.delete();
         
-        //Erase Dataframes.
+        //Delete Dataframes.
         trainingDataframe.delete();
         testingDataframe.delete();
     }

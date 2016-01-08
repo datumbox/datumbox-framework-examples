@@ -119,7 +119,7 @@ public class TextClassification {
         //Clean up
         //--------
         
-        //Erase the classifier. This removes all files.
+        //Delete the classifier. This removes all files.
         classifier.delete();
     }
     

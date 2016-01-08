@@ -154,12 +154,12 @@ public class Regression {
         //Clean up
         //--------
         
-        //Erase data transformer, featureselector and regressor.
+        //Delete data transformer, featureselector and regressor.
         dataTransformer.delete();
         featureSelection.delete();
         regressor.delete();
         
-        //Erase Dataframes.
+        //Delete Dataframes.
         trainingDataframe.delete();
         testingDataframe.delete();
     }
