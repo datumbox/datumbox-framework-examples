@@ -20,7 +20,7 @@ import com.datumbox.common.dataobjects.Record;
 import com.datumbox.common.dataobjects.TypeInference;
 import com.datumbox.common.persistentstorage.ConfigurationFactory;
 import com.datumbox.common.persistentstorage.interfaces.DatabaseConfiguration;
-import com.datumbox.common.utilities.PHPfunctions;
+import com.datumbox.common.utilities.PHPMethods;
 import com.datumbox.common.utilities.RandomGenerator;
 import com.datumbox.framework.machinelearning.classification.SoftMaxRegression;
 import com.datumbox.framework.machinelearning.datatransformation.XMinMaxNormalizer;
@@ -152,7 +152,7 @@ public class Classification {
             System.out.println("Record "+rId+" - Real Y: "+r.getY()+", Predicted Y: "+r.getYPredicted());
         }
         
-        System.out.println("Classifier Statistics: "+PHPfunctions.var_export(vm));
+        System.out.println("Classifier Statistics: "+PHPMethods.var_export(vm));
         
         
         

@@ -21,9 +21,9 @@ import com.datumbox.common.dataobjects.Record;
 import com.datumbox.common.dataobjects.TypeInference;
 import com.datumbox.common.persistentstorage.ConfigurationFactory;
 import com.datumbox.common.persistentstorage.interfaces.DatabaseConfiguration;
-import com.datumbox.common.utilities.PHPfunctions;
+import com.datumbox.common.utilities.PHPMethods;
 import com.datumbox.common.utilities.RandomGenerator;
-import com.datumbox.framework.machinelearning.common.bases.mlmodels.BaseMLmodel;
+import com.datumbox.framework.machinelearning.common.abstracts.modelers.AbstractAlgorithm;
 import com.datumbox.framework.machinelearning.datatransformation.DummyXYMinMaxNormalizer;
 import com.datumbox.framework.machinelearning.regression.NLMS;
 import java.io.FileInputStream;
@@ -115,7 +115,7 @@ public class DataModeling {
         //---------------
         
         //Get validation metrics on the training set
-        BaseMLmodel.ValidationMetrics vm = modeler.validate(trainingDataframe);
+        AbstractAlgorithm.ValidationMetrics vm = modeler.validate(trainingDataframe);
         modeler.setValidationMetrics(vm); //store them in the model for future reference
         
         //Predict a new Dataframe
@@ -128,7 +128,7 @@ public class DataModeling {
             System.out.println("Record "+rId+" - Real Y: "+r.getY()+", Predicted Y: "+r.getYPredicted());
         }
         
-        System.out.println("Modeler Statistics: "+PHPfunctions.var_export(vm));
+        System.out.println("Modeler Statistics: "+PHPMethods.var_export(vm));
         
         
         

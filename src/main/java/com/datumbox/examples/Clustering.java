@@ -20,7 +20,7 @@ import com.datumbox.common.dataobjects.Record;
 import com.datumbox.common.dataobjects.TypeInference;
 import com.datumbox.common.persistentstorage.ConfigurationFactory;
 import com.datumbox.common.persistentstorage.interfaces.DatabaseConfiguration;
-import com.datumbox.common.utilities.PHPfunctions;
+import com.datumbox.common.utilities.PHPMethods;
 import com.datumbox.common.utilities.RandomGenerator;
 import com.datumbox.framework.machinelearning.clustering.Kmeans;
 import com.datumbox.framework.machinelearning.datatransformation.DummyXMinMaxNormalizer;
@@ -151,7 +151,7 @@ public class Clustering {
             System.out.println("Record "+rId+" - Original Y: "+r.getY()+", Predicted Cluster Id: "+r.getYPredicted());
         }
         
-        System.out.println("Clusterer Statistics: "+PHPfunctions.var_export(vm));
+        System.out.println("Clusterer Statistics: "+PHPMethods.var_export(vm));
         
         
         
