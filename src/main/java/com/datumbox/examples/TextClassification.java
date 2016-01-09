@@ -22,7 +22,7 @@ import com.datumbox.common.persistentstorage.interfaces.DatabaseConfiguration;
 import com.datumbox.common.utilities.PHPMethods;
 import com.datumbox.common.utilities.RandomGenerator;
 import com.datumbox.framework.machinelearning.classification.MultinomialNaiveBayes;
-import com.datumbox.framework.machinelearning.common.abstracts.modelers.AbstractAlgorithm;
+import com.datumbox.framework.machinelearning.common.interfaces.ValidationMetrics;
 import com.datumbox.framework.machinelearning.featureselection.categorical.ChisquareSelect;
 import com.datumbox.framework.utilities.text.extractors.NgramsExtractor;
 import java.net.URI;
@@ -101,7 +101,7 @@ public class TextClassification {
         //------------------
         
         //Get validation metrics on the training set
-        AbstractAlgorithm.ValidationMetrics vm = classifier.validate(Dataframe);
+        ValidationMetrics vm = classifier.validate(Dataframe);
         classifier.setValidationMetrics(vm); //store them in the model for future reference
         
         //Classify a single sentence
