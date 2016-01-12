@@ -83,7 +83,7 @@ public class Classification {
             headerDataTypes.put("age", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("test result", TypeInference.DataType.CATEGORICAL);
 
-            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "test result", headerDataTypes, '\t', '"', "\r\n", dbConf);
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "test result", headerDataTypes, '\t', '"', "\r\n", null, null, dbConf);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);

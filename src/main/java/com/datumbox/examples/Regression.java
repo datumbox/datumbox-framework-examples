@@ -79,7 +79,7 @@ public class Regression {
             headerDataTypes.put("Population", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("Year", TypeInference.DataType.NUMERICAL); 
             
-            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", dbConf);
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", null, null, dbConf);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);

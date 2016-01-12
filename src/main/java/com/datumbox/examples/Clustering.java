@@ -85,7 +85,7 @@ public class Clustering {
             headerDataTypes.put("Thal", TypeInference.DataType.CATEGORICAL);
             headerDataTypes.put("Class", TypeInference.DataType.CATEGORICAL);
             
-            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Class", headerDataTypes, ',', '"', "\r\n", dbConf);
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Class", headerDataTypes, ',', '"', "\r\n", null, null, dbConf);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
