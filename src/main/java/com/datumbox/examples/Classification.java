@@ -33,7 +33,7 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
@@ -72,7 +72,7 @@ public class Classification {
         //------------
         Dataframe trainingDataframe;
         try (Reader fileReader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(Paths.get(Classification.class.getClassLoader().getResource("datasets/diabetes/diabetes.tsv.gz").toURI()).toFile())), "UTF-8"))) {
-            Map<String, TypeInference.DataType> headerDataTypes = new HashMap<>();
+            LinkedHashMap<String, TypeInference.DataType> headerDataTypes = new LinkedHashMap<>();
             headerDataTypes.put("pregnancies", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("plasma glucose", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("blood pressure", TypeInference.DataType.NUMERICAL);

@@ -31,7 +31,7 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -69,7 +69,7 @@ public class Clustering {
         //------------
         Dataframe trainingDataframe;
         try (Reader fileReader = new InputStreamReader(new FileInputStream(Paths.get(Clustering.class.getClassLoader().getResource("datasets/heart-desease/heart.csv").toURI()).toFile()), "UTF-8")) {
-            Map<String, TypeInference.DataType> headerDataTypes = new HashMap<>();
+            LinkedHashMap<String, TypeInference.DataType> headerDataTypes = new LinkedHashMap<>();
             headerDataTypes.put("Age", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("Sex", TypeInference.DataType.CATEGORICAL);
             headerDataTypes.put("ChestPain", TypeInference.DataType.CATEGORICAL);
@@ -120,15 +120,6 @@ public class Clustering {
         
         //Denormalize trainingDataframe (optional)
         dataTransformer.denormalize(trainingDataframe);
-        
-        System.out.println("Cluster assignments (Record Ids):");
-        for(Map.Entry<Integer, Kmeans.Cluster> entry: clusterer.getClusters().entrySet()) {
-            Integer clusterId = entry.getKey();
-            Kmeans.Cluster cl = entry.getValue();
-            
-            System.out.println("Cluster "+clusterId+": "+cl.getRecordIdSet());
-        }
-        
         
         
         //Use the clusterer

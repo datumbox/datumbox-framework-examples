@@ -32,7 +32,7 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -70,7 +70,7 @@ public class Regression {
         //------------
         Dataframe trainingDataframe;
         try (Reader fileReader = new InputStreamReader(new FileInputStream(Paths.get(Clustering.class.getClassLoader().getResource("datasets/labor-statistics/longley.csv").toURI()).toFile()), "UTF-8")) {
-            Map<String, TypeInference.DataType> headerDataTypes = new HashMap<>();
+            LinkedHashMap<String, TypeInference.DataType> headerDataTypes = new LinkedHashMap<>();
             headerDataTypes.put("Employed", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("GNP.deflator", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("GNP", TypeInference.DataType.NUMERICAL);
