@@ -15,11 +15,12 @@
  */
 package com.datumbox.examples;
 
+import com.datumbox.common.Configuration;
 import com.datumbox.common.dataobjects.Dataframe;
 import com.datumbox.common.dataobjects.Record;
 import com.datumbox.common.dataobjects.TypeInference;
-import com.datumbox.common.persistentstorage.ConfigurationFactory;
-import com.datumbox.common.persistentstorage.interfaces.DatabaseConfiguration;
+import com.datumbox.common.persistentstorage.inmemory.InMemoryConfiguration;
+import com.datumbox.common.persistentstorage.mapdb.MapDBConfiguration;
 import com.datumbox.common.utilities.PHPMethods;
 import com.datumbox.common.utilities.RandomGenerator;
 import com.datumbox.framework.machinelearning.classification.SoftMaxRegression;
@@ -63,8 +64,12 @@ public class Classification {
         //Initialization
         //--------------
         RandomGenerator.setGlobalSeed(42L); //optionally set a specific seed for all Random objects
-        DatabaseConfiguration dbConf = ConfigurationFactory.INMEMORY.getConfiguration(); //in-memory maps
-        //DatabaseConfiguration dbConf = ConfigurationFactory.MAPDB.getConfiguration(); //mapdb maps
+        Configuration conf = Configuration.getConfiguration(); //default configuration based on properties file
+        //conf.setDbConfig(new InMemoryConfiguration()); //use In-Memory storage (default)
+        //conf.setDbConfig(new MapDBConfiguration()); //use MapDB storage
+        //conf.getConcurrencyConfig().setParallelized(true); //turn on/off the parallelization
+        //conf.getConcurrencyConfig().setMaxNumberOfThreadsPerTask(4); //set the concurrency level
+        
         
         
         
@@ -83,7 +88,7 @@ public class Classification {
             headerDataTypes.put("age", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("test result", TypeInference.DataType.CATEGORICAL);
 
-            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "test result", headerDataTypes, '\t', '"', "\r\n", null, null, dbConf);
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "test result", headerDataTypes, '\t', '"', "\r\n", null, null, conf);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -95,7 +100,7 @@ public class Classification {
         //-----------------
         
         //Normalize continuous variables
-        XMinMaxNormalizer dataTransformer = new XMinMaxNormalizer("Diabetes", dbConf);
+        XMinMaxNormalizer dataTransformer = new XMinMaxNormalizer("Diabetes", conf);
         dataTransformer.fit_transform(trainingDataframe, new XMinMaxNormalizer.TrainingParameters());
         
 
@@ -105,7 +110,7 @@ public class Classification {
         
         //Perform dimensionality reduction using PCA
         
-        PCA featureSelection = new PCA("Diabetes", dbConf);
+        PCA featureSelection = new PCA("Diabetes", conf);
         PCA.TrainingParameters featureSelectionParameters = new PCA.TrainingParameters();
         featureSelectionParameters.setMaxDimensions(trainingDataframe.xColumnSize()-1); //remove one dimension
         featureSelectionParameters.setWhitened(false);
@@ -117,7 +122,7 @@ public class Classification {
         //Fit the classifier
         //------------------
         
-        SoftMaxRegression classifier = new SoftMaxRegression("Diabetes", dbConf);
+        SoftMaxRegression classifier = new SoftMaxRegression("Diabetes", conf);
         
         SoftMaxRegression.TrainingParameters param = new SoftMaxRegression.TrainingParameters();
         param.setTotalIterations(200);

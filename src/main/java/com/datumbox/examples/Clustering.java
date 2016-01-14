@@ -15,11 +15,10 @@
  */
 package com.datumbox.examples;
 
+import com.datumbox.common.Configuration;
 import com.datumbox.common.dataobjects.Dataframe;
 import com.datumbox.common.dataobjects.Record;
 import com.datumbox.common.dataobjects.TypeInference;
-import com.datumbox.common.persistentstorage.ConfigurationFactory;
-import com.datumbox.common.persistentstorage.interfaces.DatabaseConfiguration;
 import com.datumbox.common.utilities.PHPMethods;
 import com.datumbox.common.utilities.RandomGenerator;
 import com.datumbox.framework.machinelearning.clustering.Kmeans;
@@ -60,8 +59,11 @@ public class Clustering {
         //Initialization
         //--------------
         RandomGenerator.setGlobalSeed(42L); //optionally set a specific seed for all Random objects
-        DatabaseConfiguration dbConf = ConfigurationFactory.INMEMORY.getConfiguration(); //in-memory maps
-        //DatabaseConfiguration dbConf = ConfigurationFactory.MAPDB.getConfiguration(); //mapdb maps
+        Configuration conf = Configuration.getConfiguration(); //default configuration based on properties file
+        //conf.setDbConfig(new InMemoryConfiguration()); //use In-Memory storage (default)
+        //conf.setDbConfig(new MapDBConfiguration()); //use MapDB storage
+        //conf.getConcurrencyConfig().setParallelized(true); //turn on/off the parallelization
+        //conf.getConcurrencyConfig().setMaxNumberOfThreadsPerTask(4); //set the concurrency level
         
         
         
@@ -85,7 +87,7 @@ public class Clustering {
             headerDataTypes.put("Thal", TypeInference.DataType.CATEGORICAL);
             headerDataTypes.put("Class", TypeInference.DataType.CATEGORICAL);
             
-            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Class", headerDataTypes, ',', '"', "\r\n", null, null, dbConf);
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Class", headerDataTypes, ',', '"', "\r\n", null, null, conf);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -97,7 +99,7 @@ public class Clustering {
         //-----------------
         
         //Convert Categorical variables to dummy variables (boolean) and normalize continuous variables
-        DummyXMinMaxNormalizer dataTransformer = new DummyXMinMaxNormalizer("HeartDesease", dbConf);
+        DummyXMinMaxNormalizer dataTransformer = new DummyXMinMaxNormalizer("HeartDesease", conf);
         dataTransformer.fit_transform(trainingDataframe, new DummyXMinMaxNormalizer.TrainingParameters());
         
         
@@ -105,7 +107,7 @@ public class Clustering {
         //Fit the clusterer
         //-----------------
         
-        Kmeans clusterer = new Kmeans("HeartDesease", dbConf);
+        Kmeans clusterer = new Kmeans("HeartDesease", conf);
         
         Kmeans.TrainingParameters param = new Kmeans.TrainingParameters();
         param.setK(2);

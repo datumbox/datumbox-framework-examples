@@ -16,11 +16,10 @@
 package com.datumbox.examples;
 
 import com.datumbox.applications.datamodeling.Modeler;
+import com.datumbox.common.Configuration;
 import com.datumbox.common.dataobjects.Dataframe;
 import com.datumbox.common.dataobjects.Record;
 import com.datumbox.common.dataobjects.TypeInference;
-import com.datumbox.common.persistentstorage.ConfigurationFactory;
-import com.datumbox.common.persistentstorage.interfaces.DatabaseConfiguration;
 import com.datumbox.common.utilities.PHPMethods;
 import com.datumbox.common.utilities.RandomGenerator;
 import com.datumbox.framework.machinelearning.common.interfaces.ValidationMetrics;
@@ -59,8 +58,11 @@ public class DataModeling {
         //Initialization
         //--------------
         RandomGenerator.setGlobalSeed(42L); //optionally set a specific seed for all Random objects
-        DatabaseConfiguration dbConf = ConfigurationFactory.INMEMORY.getConfiguration(); //in-memory maps
-        //DatabaseConfiguration dbConf = ConfigurationFactory.MAPDB.getConfiguration(); //mapdb maps
+        Configuration conf = Configuration.getConfiguration(); //default configuration based on properties file
+        //conf.setDbConfig(new InMemoryConfiguration()); //use In-Memory storage (default)
+        //conf.setDbConfig(new MapDBConfiguration()); //use MapDB storage
+        //conf.getConcurrencyConfig().setParallelized(true); //turn on/off the parallelization
+        //conf.getConcurrencyConfig().setMaxNumberOfThreadsPerTask(4); //set the concurrency level
         
         
         
@@ -77,7 +79,7 @@ public class DataModeling {
             headerDataTypes.put("Population", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("Year", TypeInference.DataType.NUMERICAL); 
             
-            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", null, null, dbConf);
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", null, null, conf);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -106,7 +108,7 @@ public class DataModeling {
         
         //Fit the modeler
         //---------------
-        Modeler modeler = new Modeler("LaborStatistics", dbConf);
+        Modeler modeler = new Modeler("LaborStatistics", conf);
         modeler.fit(trainingDataframe, trainingParameters);
         
         
