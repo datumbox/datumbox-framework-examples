@@ -19,8 +19,6 @@ import com.datumbox.common.Configuration;
 import com.datumbox.common.dataobjects.Dataframe;
 import com.datumbox.common.dataobjects.Record;
 import com.datumbox.common.dataobjects.TypeInference;
-import com.datumbox.common.persistentstorage.inmemory.InMemoryConfiguration;
-import com.datumbox.common.persistentstorage.mapdb.MapDBConfiguration;
 import com.datumbox.common.utilities.PHPMethods;
 import com.datumbox.common.utilities.RandomGenerator;
 import com.datumbox.framework.machinelearning.classification.SoftMaxRegression;
