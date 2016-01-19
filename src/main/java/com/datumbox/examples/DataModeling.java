@@ -93,16 +93,16 @@ public class DataModeling {
         Modeler.TrainingParameters trainingParameters = new Modeler.TrainingParameters();
         
         //Model Configuration
-        trainingParameters.setMLmodelClass(NLMS.class);
-        trainingParameters.setMLmodelTrainingParameters(new NLMS.TrainingParameters());
+        trainingParameters.setModelerClass(NLMS.class);
+        trainingParameters.setModelerTrainingParameters(new NLMS.TrainingParameters());
 
         //Set data transfomation configuration
         trainingParameters.setDataTransformerClass(DummyXYMinMaxNormalizer.class);
         trainingParameters.setDataTransformerTrainingParameters(new DummyXYMinMaxNormalizer.TrainingParameters());
         
         //Set feature selection configuration
-        trainingParameters.setFeatureSelectionClass(null);
-        trainingParameters.setFeatureSelectionTrainingParameters(null);
+        trainingParameters.setFeatureSelectorClass(null);
+        trainingParameters.setFeatureSelectorTrainingParameters(null);
         
         
         
