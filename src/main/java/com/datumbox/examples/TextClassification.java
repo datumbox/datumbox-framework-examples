@@ -15,15 +15,15 @@
  */
 package com.datumbox.examples;
 
-import com.datumbox.applications.nlp.TextClassifier;
-import com.datumbox.common.Configuration;
-import com.datumbox.common.dataobjects.Record;
-import com.datumbox.common.utilities.PHPMethods;
-import com.datumbox.common.utilities.RandomGenerator;
-import com.datumbox.framework.machinelearning.classification.MultinomialNaiveBayes;
-import com.datumbox.framework.machinelearning.common.interfaces.ValidationMetrics;
-import com.datumbox.framework.machinelearning.featureselection.categorical.ChisquareSelect;
-import com.datumbox.framework.utilities.text.extractors.NgramsExtractor;
+import com.datumbox.framework.applications.nlp.TextClassifier;
+import com.datumbox.framework.common.Configuration;
+import com.datumbox.framework.common.dataobjects.Record;
+import com.datumbox.framework.common.utilities.PHPMethods;
+import com.datumbox.framework.common.utilities.RandomGenerator;
+import com.datumbox.framework.core.machinelearning.classification.MultinomialNaiveBayes;
+import com.datumbox.framework.core.machinelearning.common.interfaces.ValidationMetrics;
+import com.datumbox.framework.core.machinelearning.featureselection.categorical.ChisquareSelect;
+import com.datumbox.framework.core.utilities.text.extractors.NgramsExtractor;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;

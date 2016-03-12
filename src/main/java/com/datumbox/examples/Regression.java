@@ -15,15 +15,15 @@
  */
 package com.datumbox.examples;
 
-import com.datumbox.common.Configuration;
-import com.datumbox.common.dataobjects.Dataframe;
-import com.datumbox.common.dataobjects.Record;
-import com.datumbox.common.dataobjects.TypeInference;
-import com.datumbox.common.utilities.PHPMethods;
-import com.datumbox.common.utilities.RandomGenerator;
-import com.datumbox.framework.machinelearning.datatransformation.XYMinMaxNormalizer;
-import com.datumbox.framework.machinelearning.featureselection.continuous.PCA;
-import com.datumbox.framework.machinelearning.regression.MatrixLinearRegression;
+import com.datumbox.framework.common.Configuration;
+import com.datumbox.framework.common.dataobjects.Dataframe;
+import com.datumbox.framework.common.dataobjects.Record;
+import com.datumbox.framework.common.dataobjects.TypeInference;
+import com.datumbox.framework.common.utilities.PHPMethods;
+import com.datumbox.framework.common.utilities.RandomGenerator;
+import com.datumbox.framework.core.machinelearning.datatransformation.XYMinMaxNormalizer;
+import com.datumbox.framework.core.machinelearning.featureselection.continuous.PCA;
+import com.datumbox.framework.core.machinelearning.regression.MatrixLinearRegression;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
