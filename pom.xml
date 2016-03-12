@@ -88,26 +88,9 @@
     </properties>
     
     <dependencies>
-        <!--
         <dependency>
             <groupId>com.datumbox</groupId>
             <artifactId>datumbox-framework</artifactId>
-            <version>${datumbox-framework-version}</version>
-        </dependency>
-        -->
-        <dependency>
-            <groupId>com.datumbox</groupId>
-            <artifactId>datumbox-framework-common</artifactId>
-            <version>${datumbox-framework-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.datumbox</groupId>
-            <artifactId>datumbox-framework-core</artifactId>
-            <version>${datumbox-framework-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.datumbox</groupId>
-            <artifactId>datumbox-framework-applications</artifactId>
             <version>${datumbox-framework-version}</version>
         </dependency>
         <dependency>
