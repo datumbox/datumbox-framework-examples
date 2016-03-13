@@ -64,9 +64,9 @@ public class TextClassification {
         
         //Reading Data
         //------------
-        Map<Object, URI> Dataframe = new HashMap<>(); //The examples of each category are stored on the same file, one example per row.
-        Dataframe.put("positive", TextClassification.class.getClassLoader().getResource("datasets/sentiment-analysis/rt-polarity.pos").toURI());
-        Dataframe.put("negative", TextClassification.class.getClassLoader().getResource("datasets/sentiment-analysis/rt-polarity.neg").toURI());
+        Map<Object, URI> datasets = new HashMap<>(); //The examples of each category are stored on the same file, one example per row.
+        datasets.put("positive", TextClassification.class.getClassLoader().getResource("datasets/sentiment-analysis/rt-polarity.pos").toURI());
+        datasets.put("negative", TextClassification.class.getClassLoader().getResource("datasets/sentiment-analysis/rt-polarity.neg").toURI());
         
         
         
@@ -95,7 +95,7 @@ public class TextClassification {
         //Fit the classifier
         //------------------
         TextClassifier classifier = new TextClassifier("SentimentAnalysis", conf);
-        classifier.fit(Dataframe, trainingParameters);
+        classifier.fit(datasets, trainingParameters);
         
         
         
@@ -103,7 +103,7 @@ public class TextClassification {
         //------------------
         
         //Get validation metrics on the training set
-        ValidationMetrics vm = classifier.validate(Dataframe);
+        ValidationMetrics vm = classifier.validate(datasets);
         classifier.setValidationMetrics(vm); //store them in the model for future reference
         
         //Classify a single sentence
