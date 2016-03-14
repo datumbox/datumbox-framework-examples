@@ -78,7 +78,7 @@
     
     <properties>
         <!-- Code Dependencies -->
-        <datumbox-framework-version>${project.version}</datumbox-framework-version>
+        <datumbox-framework-lib-version>${project.version}</datumbox-framework-lib-version>
         <logback-classic-version>1.1.6</logback-classic-version>
         
         <!-- Configuration -->
@@ -90,8 +90,8 @@
     <dependencies>
         <dependency>
             <groupId>com.datumbox</groupId>
-            <artifactId>datumbox-framework</artifactId>
-            <version>${datumbox-framework-version}</version>
+            <artifactId>datumbox-framework-lib</artifactId>
+            <version>${datumbox-framework-lib-version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
