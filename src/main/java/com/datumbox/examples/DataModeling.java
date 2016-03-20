@@ -20,8 +20,8 @@ import com.datumbox.framework.common.Configuration;
 import com.datumbox.framework.common.dataobjects.Dataframe;
 import com.datumbox.framework.common.dataobjects.Record;
 import com.datumbox.framework.common.dataobjects.TypeInference;
-import com.datumbox.framework.common.utilities.PHPMethods;
 import com.datumbox.framework.common.utilities.RandomGenerator;
+import com.datumbox.framework.core.machinelearning.common.abstracts.algorithms.AbstractLinearRegression;
 import com.datumbox.framework.core.machinelearning.common.interfaces.ValidationMetrics;
 import com.datumbox.framework.core.machinelearning.datatransformation.DummyXYMinMaxNormalizer;
 import com.datumbox.framework.core.machinelearning.regression.NLMS;
@@ -127,7 +127,7 @@ public class DataModeling {
             System.out.println("Record "+rId+" - Real Y: "+r.getY()+", Predicted Y: "+r.getYPredicted());
         }
         
-        System.out.println("Modeler Statistics: "+PHPMethods.var_export(vm));
+        System.out.println("Model Rsquare: "+((AbstractLinearRegression.AbstractValidationMetrics)vm).getRSquare());
         
         
         

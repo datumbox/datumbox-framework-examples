@@ -19,7 +19,6 @@ import com.datumbox.framework.common.Configuration;
 import com.datumbox.framework.common.dataobjects.Dataframe;
 import com.datumbox.framework.common.dataobjects.Record;
 import com.datumbox.framework.common.dataobjects.TypeInference;
-import com.datumbox.framework.common.utilities.PHPMethods;
 import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.clustering.Kmeans;
 import com.datumbox.framework.core.machinelearning.datatransformation.DummyXMinMaxNormalizer;
@@ -141,7 +140,7 @@ public class Clustering {
             System.out.println("Record "+rId+" - Original Y: "+r.getY()+", Predicted Cluster Id: "+r.getYPredicted());
         }
         
-        System.out.println("Clusterer Statistics: "+PHPMethods.var_export(vm));
+        System.out.println("Clusterer Purity: "+vm.getPurity());
         
         
         

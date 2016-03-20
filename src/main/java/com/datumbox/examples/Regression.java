@@ -19,7 +19,6 @@ import com.datumbox.framework.common.Configuration;
 import com.datumbox.framework.common.dataobjects.Dataframe;
 import com.datumbox.framework.common.dataobjects.Record;
 import com.datumbox.framework.common.dataobjects.TypeInference;
-import com.datumbox.framework.common.utilities.PHPMethods;
 import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.datatransformation.XYMinMaxNormalizer;
 import com.datumbox.framework.core.machinelearning.featureselection.continuous.PCA;
@@ -146,7 +145,7 @@ public class Regression {
             System.out.println("Record "+rId+" - Real Y: "+r.getY()+", Predicted Y: "+r.getYPredicted());
         }
         
-        System.out.println("Regressor Statistics: "+PHPMethods.var_export(vm));
+        System.out.println("Regressor Rsquare: "+vm.getRSquare());
         
         
         

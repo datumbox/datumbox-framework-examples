@@ -18,9 +18,9 @@ package com.datumbox.examples;
 import com.datumbox.framework.applications.nlp.TextClassifier;
 import com.datumbox.framework.common.Configuration;
 import com.datumbox.framework.common.dataobjects.Record;
-import com.datumbox.framework.common.utilities.PHPMethods;
 import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.classification.MultinomialNaiveBayes;
+import com.datumbox.framework.core.machinelearning.common.abstracts.modelers.AbstractClassifier;
 import com.datumbox.framework.core.machinelearning.common.interfaces.ValidationMetrics;
 import com.datumbox.framework.core.machinelearning.featureselection.categorical.ChisquareSelect;
 import com.datumbox.framework.core.utilities.text.extractors.NgramsExtractor;
@@ -115,7 +115,7 @@ public class TextClassification {
         System.out.println("Predicted class: "+r.getYPredicted());
         System.out.println("Probability: "+r.getYPredictedProbabilities().get(r.getYPredicted()));
         
-        System.out.println("Classifier Statistics: "+PHPMethods.var_export(vm));
+        System.out.println("Classifier Accuracy: "+((AbstractClassifier.AbstractValidationMetrics)vm).getAccuracy());
         
         
         
