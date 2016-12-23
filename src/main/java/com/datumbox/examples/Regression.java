@@ -20,8 +20,10 @@ import com.datumbox.framework.common.dataobjects.Dataframe;
 import com.datumbox.framework.common.dataobjects.Record;
 import com.datumbox.framework.common.dataobjects.TypeInference;
 import com.datumbox.framework.common.utilities.RandomGenerator;
+import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.datatransformation.XYMinMaxNormalizer;
 import com.datumbox.framework.core.machinelearning.featureselection.continuous.PCA;
+import com.datumbox.framework.core.machinelearning.modelselection.metrics.LinearRegressionMetrics;
 import com.datumbox.framework.core.machinelearning.regression.MatrixLinearRegression;
 
 import java.io.*;
@@ -89,8 +91,9 @@ public class Regression {
         //-----------------
         
         //Normalize continuous variables
-        XYMinMaxNormalizer dataTransformer = new XYMinMaxNormalizer("LaborStatistics", conf);
-        dataTransformer.fit_transform(trainingDataframe, new XYMinMaxNormalizer.TrainingParameters());
+        XYMinMaxNormalizer dataTransformer = MLBuilder.create(new XYMinMaxNormalizer.TrainingParameters(), conf);
+        dataTransformer.fit_transform(trainingDataframe);
+        dataTransformer.save("LaborStatistics");
         
 
 
@@ -98,29 +101,32 @@ public class Regression {
         //-----------------
         
         //Perform dimensionality reduction using PCA
-        
-        PCA featureSelection = new PCA("LaborStatistics", conf);
+
         PCA.TrainingParameters featureSelectionParameters = new PCA.TrainingParameters();
         featureSelectionParameters.setMaxDimensions(trainingDataframe.xColumnSize()-1); //remove one dimension
         featureSelectionParameters.setWhitened(false);
         featureSelectionParameters.setVariancePercentageThreshold(0.99999995);
-        featureSelection.fit_transform(trainingDataframe, featureSelectionParameters);
+
+        PCA featureSelection = MLBuilder.create(featureSelectionParameters, conf);
+        featureSelection.fit_transform(trainingDataframe);
+        featureSelection.save("LaborStatistics");
         
         
         
         //Fit the regressor
         //-----------------
-        
-        MatrixLinearRegression regressor = new MatrixLinearRegression("LaborStatistics", conf);
-        
+
         MatrixLinearRegression.TrainingParameters param = new MatrixLinearRegression.TrainingParameters();
-        
-        regressor.fit(trainingDataframe, param);
+
+        MatrixLinearRegression regressor = MLBuilder.create(param, conf);
+        regressor.fit(trainingDataframe);
+        regressor.save("LaborStatistics");
+        regressor.close(); //close the regressor, we will use it again later
         
         //Denormalize trainingDataframe (optional)
         dataTransformer.denormalize(trainingDataframe);
-        
-        
+
+
         
         //Use the regressor
         //------------------
@@ -130,10 +136,13 @@ public class Regression {
         
         //Apply the same featureSelection transformations on testingDataframe
         featureSelection.transform(testingDataframe);
-        
+
+        //Load again the regressor
+        regressor = MLBuilder.load(MatrixLinearRegression.class, "LaborStatistics", conf);
+        regressor.predict(testingDataframe);
+
         //Get validation metrics on the training set
-        MatrixLinearRegression.ValidationMetrics vm = regressor.validate(testingDataframe);
-        regressor.setValidationMetrics(vm); //store them in the model for future reference
+        LinearRegressionMetrics vm = new LinearRegressionMetrics(testingDataframe);
         
         //Denormalize testingDataframe (optional)
         dataTransformer.denormalize(testingDataframe);

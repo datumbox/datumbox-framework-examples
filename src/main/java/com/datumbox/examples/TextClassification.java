@@ -19,10 +19,10 @@ import com.datumbox.framework.applications.nlp.TextClassifier;
 import com.datumbox.framework.common.Configuration;
 import com.datumbox.framework.common.dataobjects.Record;
 import com.datumbox.framework.common.utilities.RandomGenerator;
+import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.classification.MultinomialNaiveBayes;
-import com.datumbox.framework.core.machinelearning.common.abstracts.modelers.AbstractClassifier;
-import com.datumbox.framework.core.machinelearning.common.interfaces.ValidationMetrics;
 import com.datumbox.framework.core.machinelearning.featureselection.categorical.ChisquareSelect;
+import com.datumbox.framework.core.machinelearning.modelselection.metrics.ClassificationMetrics;
 import com.datumbox.framework.core.utilities.text.extractors.NgramsExtractor;
 
 import java.net.URI;
@@ -76,46 +76,42 @@ public class TextClassification {
         TextClassifier.TrainingParameters trainingParameters = new TextClassifier.TrainingParameters();
         
         //Classifier configuration
-        trainingParameters.setModelerClass(MultinomialNaiveBayes.class);
         trainingParameters.setModelerTrainingParameters(new MultinomialNaiveBayes.TrainingParameters());
         
         //Set data transfomation configuration
-        trainingParameters.setDataTransformerClass(null);
         trainingParameters.setDataTransformerTrainingParameters(null);
         
         //Set feature selection configuration
-        trainingParameters.setFeatureSelectorClass(ChisquareSelect.class);
         trainingParameters.setFeatureSelectorTrainingParameters(new ChisquareSelect.TrainingParameters());
         
         //Set text extraction configuration
-        trainingParameters.setTextExtractorClass(NgramsExtractor.class);
         trainingParameters.setTextExtractorParameters(new NgramsExtractor.Parameters());
         
         
         
         //Fit the classifier
         //------------------
-        TextClassifier classifier = new TextClassifier("SentimentAnalysis", conf);
-        classifier.fit(datasets, trainingParameters);
+        TextClassifier textClassifier = MLBuilder.create(trainingParameters, conf);
+        textClassifier.fit(datasets);
+        textClassifier.save("SentimentAnalysis");
         
         
         
         //Use the classifier
         //------------------
         
-        //Get validation metrics on the training set
-        ValidationMetrics vm = classifier.validate(datasets);
-        classifier.setValidationMetrics(vm); //store them in the model for future reference
+        //Get validation metrics on the dataset
+        ClassificationMetrics vm = textClassifier.validate(datasets);
         
         //Classify a single sentence
         String sentence = "Datumbox is amazing!";
-        Record r = classifier.predict(sentence);
+        Record r = textClassifier.predict(sentence);
         
         System.out.println("Classifing sentence: \""+sentence+"\"");
         System.out.println("Predicted class: "+r.getYPredicted());
         System.out.println("Probability: "+r.getYPredictedProbabilities().get(r.getYPredicted()));
         
-        System.out.println("Classifier Accuracy: "+((AbstractClassifier.AbstractValidationMetrics)vm).getAccuracy());
+        System.out.println("Classifier Accuracy: "+vm.getAccuracy());
         
         
         
@@ -123,7 +119,7 @@ public class TextClassification {
         //--------
         
         //Delete the classifier. This removes all files.
-        classifier.delete();
+        textClassifier.delete();
     }
     
 }

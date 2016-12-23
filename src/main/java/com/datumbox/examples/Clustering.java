@@ -20,8 +20,10 @@ import com.datumbox.framework.common.dataobjects.Dataframe;
 import com.datumbox.framework.common.dataobjects.Record;
 import com.datumbox.framework.common.dataobjects.TypeInference;
 import com.datumbox.framework.common.utilities.RandomGenerator;
+import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.clustering.Kmeans;
 import com.datumbox.framework.core.machinelearning.datatransformation.DummyXMinMaxNormalizer;
+import com.datumbox.framework.core.machinelearning.modelselection.metrics.ClusteringMetrics;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -88,22 +90,24 @@ public class Clustering {
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
         }
-        Dataframe testingDataframe = trainingDataframe.copy();
+
+        //Store data and load them back
+        trainingDataframe.save("HeartDeseaseDataset");
+        Dataframe testingDataframe = Dataframe.Builder.load("HeartDeseaseDataset", conf);
         
         
         //Transform Dataframe
         //-----------------
         
         //Convert Categorical variables to dummy variables (boolean) and normalize continuous variables
-        DummyXMinMaxNormalizer dataTransformer = new DummyXMinMaxNormalizer("HeartDesease", conf);
-        dataTransformer.fit_transform(trainingDataframe, new DummyXMinMaxNormalizer.TrainingParameters());
+        DummyXMinMaxNormalizer dataTransformer = MLBuilder.create(new DummyXMinMaxNormalizer.TrainingParameters(), conf);
+        dataTransformer.fit_transform(trainingDataframe);
+        dataTransformer.save("HeartDesease");
         
         
         
         //Fit the clusterer
         //-----------------
-        
-        Kmeans clusterer = new Kmeans("HeartDesease", conf);
         
         Kmeans.TrainingParameters param = new Kmeans.TrainingParameters();
         param.setK(2);
@@ -113,8 +117,10 @@ public class Clustering {
         param.setWeighted(false);
         param.setCategoricalGamaMultiplier(1.0);
         param.setSubsetFurthestFirstcValue(2.0);
-        
-        clusterer.fit(trainingDataframe, param);
+
+        Kmeans clusterer = MLBuilder.create(param, conf);
+        clusterer.fit(trainingDataframe);
+        clusterer.save("HeartDesease");
         
         //Denormalize trainingDataframe (optional)
         dataTransformer.denormalize(trainingDataframe);
@@ -125,10 +131,12 @@ public class Clustering {
         
         //Apply the same transformations on testingDataframe
         dataTransformer.transform(testingDataframe);
+
+        //Make predictions on the test set
+        clusterer.predict(testingDataframe);
         
-        //Get validation metrics on the training set
-        Kmeans.ValidationMetrics vm = clusterer.validate(testingDataframe);
-        clusterer.setValidationMetrics(vm); //store them in the model for future reference
+        //Get validation metrics on the test set
+        ClusteringMetrics vm = new ClusteringMetrics(testingDataframe);
         
         //Denormalize testingDataframe (optional)
         dataTransformer.denormalize(testingDataframe);

@@ -21,9 +21,9 @@ import com.datumbox.framework.common.dataobjects.Dataframe;
 import com.datumbox.framework.common.dataobjects.Record;
 import com.datumbox.framework.common.dataobjects.TypeInference;
 import com.datumbox.framework.common.utilities.RandomGenerator;
-import com.datumbox.framework.core.machinelearning.common.abstracts.algorithms.AbstractLinearRegression;
-import com.datumbox.framework.core.machinelearning.common.interfaces.ValidationMetrics;
+import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.datatransformation.DummyXYMinMaxNormalizer;
+import com.datumbox.framework.core.machinelearning.modelselection.metrics.LinearRegressionMetrics;
 import com.datumbox.framework.core.machinelearning.regression.NLMS;
 
 import java.io.*;
@@ -90,32 +90,31 @@ public class DataModeling {
         Modeler.TrainingParameters trainingParameters = new Modeler.TrainingParameters();
         
         //Model Configuration
-        trainingParameters.setModelerClass(NLMS.class);
         trainingParameters.setModelerTrainingParameters(new NLMS.TrainingParameters());
 
         //Set data transfomation configuration
-        trainingParameters.setDataTransformerClass(DummyXYMinMaxNormalizer.class);
         trainingParameters.setDataTransformerTrainingParameters(new DummyXYMinMaxNormalizer.TrainingParameters());
         
         //Set feature selection configuration
-        trainingParameters.setFeatureSelectorClass(null);
         trainingParameters.setFeatureSelectorTrainingParameters(null);
         
         
         
         //Fit the modeler
         //---------------
-        Modeler modeler = new Modeler("LaborStatistics", conf);
-        modeler.fit(trainingDataframe, trainingParameters);
-        
-        
+        Modeler modeler = MLBuilder.create(trainingParameters, conf);
+        modeler.fit(trainingDataframe);
+        modeler.save("LaborStatistics");
+
         
         //Use the modeler
         //---------------
-        
+
+        //Make predictions on the training set
+        modeler.predict(trainingDataframe);
+
         //Get validation metrics on the training set
-        ValidationMetrics vm = modeler.validate(trainingDataframe);
-        modeler.setValidationMetrics(vm); //store them in the model for future reference
+        LinearRegressionMetrics vm = new LinearRegressionMetrics(trainingDataframe);
         
         //Predict a new Dataframe
         modeler.predict(testingDataframe);
@@ -127,7 +126,7 @@ public class DataModeling {
             System.out.println("Record "+rId+" - Real Y: "+r.getY()+", Predicted Y: "+r.getYPredicted());
         }
         
-        System.out.println("Model Rsquare: "+((AbstractLinearRegression.AbstractValidationMetrics)vm).getRSquare());
+        System.out.println("Model Rsquare: "+vm.getRSquare());
         
         
         

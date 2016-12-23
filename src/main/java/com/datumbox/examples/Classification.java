@@ -20,9 +20,12 @@ import com.datumbox.framework.common.dataobjects.Dataframe;
 import com.datumbox.framework.common.dataobjects.Record;
 import com.datumbox.framework.common.dataobjects.TypeInference;
 import com.datumbox.framework.common.utilities.RandomGenerator;
+import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.classification.SoftMaxRegression;
+import com.datumbox.framework.core.machinelearning.common.interfaces.ValidationMetrics;
 import com.datumbox.framework.core.machinelearning.datatransformation.XMinMaxNormalizer;
 import com.datumbox.framework.core.machinelearning.featureselection.continuous.PCA;
+import com.datumbox.framework.core.machinelearning.modelselection.metrics.ClassificationMetrics;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -93,8 +96,9 @@ public class Classification {
         //-----------------
         
         //Normalize continuous variables
-        XMinMaxNormalizer dataTransformer = new XMinMaxNormalizer("Diabetes", conf);
-        dataTransformer.fit_transform(trainingDataframe, new XMinMaxNormalizer.TrainingParameters());
+        XMinMaxNormalizer dataTransformer = MLBuilder.create(new XMinMaxNormalizer.TrainingParameters(), conf);
+        dataTransformer.fit_transform(trainingDataframe);
+        dataTransformer.save("Diabetes");
         
 
 
@@ -102,27 +106,29 @@ public class Classification {
         //-----------------
         
         //Perform dimensionality reduction using PCA
-        
-        PCA featureSelection = new PCA("Diabetes", conf);
+
         PCA.TrainingParameters featureSelectionParameters = new PCA.TrainingParameters();
         featureSelectionParameters.setMaxDimensions(trainingDataframe.xColumnSize()-1); //remove one dimension
         featureSelectionParameters.setWhitened(false);
         featureSelectionParameters.setVariancePercentageThreshold(0.99999995);
-        featureSelection.fit_transform(trainingDataframe, featureSelectionParameters);
+
+        PCA featureSelection = MLBuilder.create(featureSelectionParameters, conf);
+        featureSelection.fit_transform(trainingDataframe);
+        featureSelection.save("Diabetes");
         
         
         
         //Fit the classifier
         //------------------
         
-        SoftMaxRegression classifier = new SoftMaxRegression("Diabetes", conf);
-        
         SoftMaxRegression.TrainingParameters param = new SoftMaxRegression.TrainingParameters();
         param.setTotalIterations(200);
         param.setLearningRate(0.1);
-        
-        classifier.fit(trainingDataframe, param);
-        
+
+        SoftMaxRegression classifier = MLBuilder.create(param, conf);
+        classifier.fit(trainingDataframe);
+        classifier.save("Diabetes");
+
         //Denormalize trainingDataframe (optional)
         dataTransformer.denormalize(trainingDataframe);
         
@@ -135,10 +141,12 @@ public class Classification {
         
         //Apply the same featureSelection transformations on testingDataframe
         featureSelection.transform(testingDataframe);
+
+        //Use the classifier to make predictions on the testingDataframe
+        classifier.predict(testingDataframe);
         
-        //Get validation metrics on the training set
-        SoftMaxRegression.ValidationMetrics vm = classifier.validate(testingDataframe);
-        classifier.setValidationMetrics(vm); //store them in the model for future reference
+        //Get validation metrics on the test set
+        ClassificationMetrics vm = new ClassificationMetrics(testingDataframe);
         
         //Denormalize testingDataframe (optional)
         dataTransformer.denormalize(testingDataframe);
