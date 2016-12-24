@@ -92,7 +92,7 @@ public class Classification {
         }
 
         //Spit into train and test datasets
-        ShuffleSplitter.Split split = new ShuffleSplitter(0.8, 1).split(data).iterator().next();
+        ShuffleSplitter.Split split = new ShuffleSplitter(0.8, 1).split(data).next();
         Dataframe trainingDataframe = split.getTrain();
         Dataframe testingDataframe = split.getTest();
         
