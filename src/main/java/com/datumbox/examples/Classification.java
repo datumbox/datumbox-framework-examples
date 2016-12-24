@@ -26,6 +26,7 @@ import com.datumbox.framework.core.machinelearning.common.interfaces.ValidationM
 import com.datumbox.framework.core.machinelearning.datatransformation.XMinMaxNormalizer;
 import com.datumbox.framework.core.machinelearning.featureselection.continuous.PCA;
 import com.datumbox.framework.core.machinelearning.modelselection.metrics.ClassificationMetrics;
+import com.datumbox.framework.core.machinelearning.modelselection.splitters.ShuffleSplitter;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -71,7 +72,7 @@ public class Classification {
         
         //Reading Data
         //------------
-        Dataframe trainingDataframe;
+        Dataframe data;
         try (Reader fileReader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(Paths.get(Classification.class.getClassLoader().getResource("datasets/diabetes/diabetes.tsv.gz").toURI()).toFile())), "UTF-8"))) {
             LinkedHashMap<String, TypeInference.DataType> headerDataTypes = new LinkedHashMap<>();
             headerDataTypes.put("pregnancies", TypeInference.DataType.NUMERICAL);
@@ -84,12 +85,16 @@ public class Classification {
             headerDataTypes.put("age", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("test result", TypeInference.DataType.CATEGORICAL);
 
-            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "test result", headerDataTypes, '\t', '"', "\r\n", null, null, conf);
+            data = Dataframe.Builder.parseCSVFile(fileReader, "test result", headerDataTypes, '\t', '"', "\r\n", null, null, conf);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
         }
-        Dataframe testingDataframe = trainingDataframe.copy();
+
+        //Spit into train and test datasets
+        ShuffleSplitter.Split split = new ShuffleSplitter(0.8, 1).split(data).iterator().next();
+        Dataframe trainingDataframe = split.getTrain();
+        Dataframe testingDataframe = split.getTest();
         
         
         //Transform Dataframe
@@ -170,9 +175,9 @@ public class Classification {
         featureSelection.delete();
         classifier.delete();
         
-        //Delete Dataframes.
-        trainingDataframe.delete();
-        testingDataframe.delete();
+        //Close Dataframes.
+        trainingDataframe.close();
+        testingDataframe.close();
     }
     
 }

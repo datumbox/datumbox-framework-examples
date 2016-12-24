@@ -165,10 +165,10 @@ public class Regression {
         dataTransformer.delete();
         featureSelection.delete();
         regressor.delete();
-        
-        //Delete Dataframes.
-        trainingDataframe.delete();
-        testingDataframe.delete();
+
+        //Close Dataframes.
+        trainingDataframe.close();
+        testingDataframe.close();
     }
     
 }

@@ -159,9 +159,9 @@ public class Clustering {
         dataTransformer.delete();
         clusterer.delete();
         
-        //Delete Dataframes.
+        //Delete the train and close the test Dataframe.
         trainingDataframe.delete();
-        testingDataframe.delete();
+        testingDataframe.close();
     }
     
 }

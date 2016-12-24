@@ -135,10 +135,10 @@ public class DataModeling {
         
         //Delete the modeler. This removes all files.
         modeler.delete();
-        
-        //Delete Dataframes.
-        trainingDataframe.delete();
-        testingDataframe.delete();
+
+        //Close Dataframes.
+        trainingDataframe.close();
+        testingDataframe.close();
     }
     
 }
