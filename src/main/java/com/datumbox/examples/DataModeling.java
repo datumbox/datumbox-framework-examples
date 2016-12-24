@@ -48,18 +48,18 @@ public class DataModeling {
         /**
          * There are two configuration files in the resources folder:
          * 
-         * - datumbox.config.properties: It contains the configuration for the storage engines (required)
+         * - datumbox.configuration.properties: It contains the configuration for the storage engines (required)
          * - logback.xml: It contains the configuration file for the logger (optional)
          */
         
         //Initialization
         //--------------
         RandomGenerator.setGlobalSeed(42L); //optionally set a specific seed for all Random objects
-        Configuration conf = Configuration.getConfiguration(); //default configuration based on properties file
-        //conf.setDbConfig(new InMemoryConfiguration()); //use In-Memory storage (default)
-        //conf.setDbConfig(new MapDBConfiguration()); //use MapDB storage
-        //conf.getConcurrencyConfig().setParallelized(true); //turn on/off the parallelization
-        //conf.getConcurrencyConfig().setMaxNumberOfThreadsPerTask(4); //set the concurrency level
+        Configuration configuration = Configuration.getConfiguration(); //default configuration based on properties file
+        //configuration.setStorageConfiguration(new InMemoryConfiguration()); //use In-Memory engine (default)
+        //configuration.setStorageConfiguration(new MapDBConfiguration()); //use MapDB engine
+        //configuration.getConcurrencyConfiguration().setParallelized(true); //turn on/off the parallelization
+        //configuration.getConcurrencyConfiguration().setMaxNumberOfThreadsPerTask(4); //set the concurrency level
         
         
         
@@ -76,7 +76,7 @@ public class DataModeling {
             headerDataTypes.put("Population", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("Year", TypeInference.DataType.NUMERICAL); 
             
-            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", null, null, conf);
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", null, null, configuration);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -102,7 +102,7 @@ public class DataModeling {
         
         //Fit the modeler
         //---------------
-        Modeler modeler = MLBuilder.create(trainingParameters, conf);
+        Modeler modeler = MLBuilder.create(trainingParameters, configuration);
         modeler.fit(trainingDataframe);
         modeler.save("LaborStatistics");
 

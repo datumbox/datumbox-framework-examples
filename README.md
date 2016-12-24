@@ -27,7 +27,7 @@ All of the above files contain a main() method. To use it just clone the project
 
 The project contains also two configuration files in the resources folder:
 
-- [datumbox.config.properties](./src/main/resources/datumbox.config.properties): It contains the configuration for the framework (required).
+- [datumbox.configuration.properties](src/main/resources/datumbox.configuration.properties): It contains the configuration for the framework (required).
 - [logback.xml](./src/main/resources/logback.xml): It contains the configuration file for the logger (optional).
 
 Finally in the resources folder there are several [real world datasets](./src/main/resources/datasets/) which are used for testing.

@@ -22,7 +22,6 @@ import com.datumbox.framework.common.dataobjects.TypeInference;
 import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.classification.SoftMaxRegression;
-import com.datumbox.framework.core.machinelearning.common.interfaces.ValidationMetrics;
 import com.datumbox.framework.core.machinelearning.datatransformation.XMinMaxNormalizer;
 import com.datumbox.framework.core.machinelearning.featureselection.continuous.PCA;
 import com.datumbox.framework.core.machinelearning.modelselection.metrics.ClassificationMetrics;
@@ -54,18 +53,18 @@ public class Classification {
         /**
          * There are two configuration files in the resources folder:
          * 
-         * - datumbox.config.properties: It contains the configuration for the storage engines (required)
+         * - datumbox.configuration.properties: It contains the configuration for the storage engines (required)
          * - logback.xml: It contains the configuration file for the logger (optional)
          */
         
         //Initialization
         //--------------
         RandomGenerator.setGlobalSeed(42L); //optionally set a specific seed for all Random objects
-        Configuration conf = Configuration.getConfiguration(); //default configuration based on properties file
-        //conf.setDbConfig(new InMemoryConfiguration()); //use In-Memory storage (default)
-        //conf.setDbConfig(new MapDBConfiguration()); //use MapDB storage
-        //conf.getConcurrencyConfig().setParallelized(true); //turn on/off the parallelization
-        //conf.getConcurrencyConfig().setMaxNumberOfThreadsPerTask(4); //set the concurrency level
+        Configuration configuration = Configuration.getConfiguration(); //default configuration based on properties file
+        //configuration.setStorageConfiguration(new InMemoryConfiguration()); //use In-Memory engine (default)
+        //configuration.setStorageConfiguration(new MapDBConfiguration()); //use MapDB engine
+        //configuration.getConcurrencyConfiguration().setParallelized(true); //turn on/off the parallelization
+        //configuration.getConcurrencyConfiguration().setMaxNumberOfThreadsPerTask(4); //set the concurrency level
         
         
         
@@ -85,7 +84,7 @@ public class Classification {
             headerDataTypes.put("age", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("test result", TypeInference.DataType.CATEGORICAL);
 
-            data = Dataframe.Builder.parseCSVFile(fileReader, "test result", headerDataTypes, '\t', '"', "\r\n", null, null, conf);
+            data = Dataframe.Builder.parseCSVFile(fileReader, "test result", headerDataTypes, '\t', '"', "\r\n", null, null, configuration);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -101,7 +100,7 @@ public class Classification {
         //-----------------
         
         //Normalize continuous variables
-        XMinMaxNormalizer dataTransformer = MLBuilder.create(new XMinMaxNormalizer.TrainingParameters(), conf);
+        XMinMaxNormalizer dataTransformer = MLBuilder.create(new XMinMaxNormalizer.TrainingParameters(), configuration);
         dataTransformer.fit_transform(trainingDataframe);
         dataTransformer.save("Diabetes");
         
@@ -117,7 +116,7 @@ public class Classification {
         featureSelectionParameters.setWhitened(false);
         featureSelectionParameters.setVariancePercentageThreshold(0.99999995);
 
-        PCA featureSelection = MLBuilder.create(featureSelectionParameters, conf);
+        PCA featureSelection = MLBuilder.create(featureSelectionParameters, configuration);
         featureSelection.fit_transform(trainingDataframe);
         featureSelection.save("Diabetes");
         
@@ -130,7 +129,7 @@ public class Classification {
         param.setTotalIterations(200);
         param.setLearningRate(0.1);
 
-        SoftMaxRegression classifier = MLBuilder.create(param, conf);
+        SoftMaxRegression classifier = MLBuilder.create(param, configuration);
         classifier.fit(trainingDataframe);
         classifier.save("Diabetes");
 

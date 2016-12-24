@@ -51,18 +51,18 @@ public class Regression {
         /**
          * There are two configuration files in the resources folder:
          * 
-         * - datumbox.config.properties: It contains the configuration for the storage engines (required)
+         * - datumbox.configuration.properties: It contains the configuration for the storage engines (required)
          * - logback.xml: It contains the configuration file for the logger (optional)
          */   
         
         //Initialization
         //--------------
         RandomGenerator.setGlobalSeed(42L); //optionally set a specific seed for all Random objects
-        Configuration conf = Configuration.getConfiguration(); //default configuration based on properties file
-        //conf.setDbConfig(new InMemoryConfiguration()); //use In-Memory storage (default)
-        //conf.setDbConfig(new MapDBConfiguration()); //use MapDB storage
-        //conf.getConcurrencyConfig().setParallelized(true); //turn on/off the parallelization
-        //conf.getConcurrencyConfig().setMaxNumberOfThreadsPerTask(4); //set the concurrency level
+        Configuration configuration = Configuration.getConfiguration(); //default configuration based on properties file
+        //configuration.setStorageConfiguration(new InMemoryConfiguration()); //use In-Memory engine (default)
+        //configuration.setStorageConfiguration(new MapDBConfiguration()); //use MapDB engine
+        //configuration.getConcurrencyConfiguration().setParallelized(true); //turn on/off the parallelization
+        //configuration.getConcurrencyConfiguration().setMaxNumberOfThreadsPerTask(4); //set the concurrency level
         
         
         
@@ -79,7 +79,7 @@ public class Regression {
             headerDataTypes.put("Population", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("Year", TypeInference.DataType.NUMERICAL); 
             
-            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", null, null, conf);
+            trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", null, null, configuration);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -91,7 +91,7 @@ public class Regression {
         //-----------------
         
         //Normalize continuous variables
-        XYMinMaxNormalizer dataTransformer = MLBuilder.create(new XYMinMaxNormalizer.TrainingParameters(), conf);
+        XYMinMaxNormalizer dataTransformer = MLBuilder.create(new XYMinMaxNormalizer.TrainingParameters(), configuration);
         dataTransformer.fit_transform(trainingDataframe);
         dataTransformer.save("LaborStatistics");
         
@@ -107,7 +107,7 @@ public class Regression {
         featureSelectionParameters.setWhitened(false);
         featureSelectionParameters.setVariancePercentageThreshold(0.99999995);
 
-        PCA featureSelection = MLBuilder.create(featureSelectionParameters, conf);
+        PCA featureSelection = MLBuilder.create(featureSelectionParameters, configuration);
         featureSelection.fit_transform(trainingDataframe);
         featureSelection.save("LaborStatistics");
         
@@ -118,7 +118,7 @@ public class Regression {
 
         MatrixLinearRegression.TrainingParameters param = new MatrixLinearRegression.TrainingParameters();
 
-        MatrixLinearRegression regressor = MLBuilder.create(param, conf);
+        MatrixLinearRegression regressor = MLBuilder.create(param, configuration);
         regressor.fit(trainingDataframe);
         regressor.save("LaborStatistics");
         regressor.close(); //close the regressor, we will use it again later
@@ -138,7 +138,7 @@ public class Regression {
         featureSelection.transform(testingDataframe);
 
         //Load again the regressor
-        regressor = MLBuilder.load(MatrixLinearRegression.class, "LaborStatistics", conf);
+        regressor = MLBuilder.load(MatrixLinearRegression.class, "LaborStatistics", configuration);
         regressor.predict(testingDataframe);
 
         //Get validation metrics on the training set
