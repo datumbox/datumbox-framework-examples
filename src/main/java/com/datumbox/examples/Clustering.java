@@ -22,8 +22,9 @@ import com.datumbox.framework.common.dataobjects.TypeInference;
 import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.clustering.Kmeans;
-import com.datumbox.framework.core.machinelearning.datatransformation.DummyXMinMaxNormalizer;
 import com.datumbox.framework.core.machinelearning.modelselection.metrics.ClusteringMetrics;
+import com.datumbox.framework.core.machinelearning.preprocessing.CornerConstraintsEncoder;
+import com.datumbox.framework.core.machinelearning.preprocessing.MinMaxScaler;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -99,10 +100,18 @@ public class Clustering {
         //Transform Dataframe
         //-----------------
         
-        //Convert Categorical variables to dummy variables (boolean) and normalize continuous variables
-        DummyXMinMaxNormalizer dataTransformer = MLBuilder.create(new DummyXMinMaxNormalizer.TrainingParameters(), configuration);
-        dataTransformer.fit_transform(trainingDataframe);
-        dataTransformer.save("HeartDesease");
+        //Convert Categorical variables to dummy variables (boolean) and scale continuous variables
+        MinMaxScaler.TrainingParameters nsParams = new MinMaxScaler.TrainingParameters();
+        MinMaxScaler numericalScaler = MLBuilder.create(nsParams, configuration);
+
+        numericalScaler.fit_transform(trainingDataframe);
+        numericalScaler.save("HeartDesease");
+
+        CornerConstraintsEncoder.TrainingParameters ceParams = new CornerConstraintsEncoder.TrainingParameters();
+        CornerConstraintsEncoder categoricalEncoder = MLBuilder.create(ceParams, configuration);
+
+        categoricalEncoder.fit_transform(trainingDataframe);
+        categoricalEncoder.save("HeartDesease");
         
         
         
@@ -122,24 +131,19 @@ public class Clustering {
         clusterer.fit(trainingDataframe);
         clusterer.save("HeartDesease");
         
-        //Denormalize trainingDataframe (optional)
-        dataTransformer.denormalize(trainingDataframe);
-        
         
         //Use the clusterer
         //-----------------
         
-        //Apply the same transformations on testingDataframe
-        dataTransformer.transform(testingDataframe);
+        //Apply the same scaling and encoding on testingDataframe
+        numericalScaler.transform(testingDataframe);
+        categoricalEncoder.transform(testingDataframe);
 
         //Make predictions on the test set
         clusterer.predict(testingDataframe);
         
         //Get validation metrics on the test set
         ClusteringMetrics vm = new ClusteringMetrics(testingDataframe);
-        
-        //Denormalize testingDataframe (optional)
-        dataTransformer.denormalize(testingDataframe);
         
         System.out.println("Results:");
         for(Map.Entry<Integer, Record> entry: testingDataframe.entries()) {
@@ -155,8 +159,9 @@ public class Clustering {
         //Clean up
         //--------
         
-        //Delete data transformer, clusterer.
-        dataTransformer.delete();
+        //Delete scaler, encoder, clusterer.
+        numericalScaler.delete();
+        categoricalEncoder.delete();
         clusterer.delete();
         
         //Delete the train and close the test Dataframe.

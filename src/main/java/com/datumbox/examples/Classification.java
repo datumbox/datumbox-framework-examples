@@ -22,10 +22,10 @@ import com.datumbox.framework.common.dataobjects.TypeInference;
 import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.classification.SoftMaxRegression;
-import com.datumbox.framework.core.machinelearning.datatransformation.XMinMaxNormalizer;
 import com.datumbox.framework.core.machinelearning.featureselection.continuous.PCA;
 import com.datumbox.framework.core.machinelearning.modelselection.metrics.ClassificationMetrics;
 import com.datumbox.framework.core.machinelearning.modelselection.splitters.ShuffleSplitter;
+import com.datumbox.framework.core.machinelearning.preprocessing.MinMaxScaler;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -99,10 +99,12 @@ public class Classification {
         //Transform Dataframe
         //-----------------
         
-        //Normalize continuous variables
-        XMinMaxNormalizer dataTransformer = MLBuilder.create(new XMinMaxNormalizer.TrainingParameters(), configuration);
-        dataTransformer.fit_transform(trainingDataframe);
-        dataTransformer.save("Diabetes");
+        //Scale continuous variables
+        MinMaxScaler.TrainingParameters nsParams = new MinMaxScaler.TrainingParameters();
+        MinMaxScaler numericalScaler = MLBuilder.create(nsParams, configuration);
+
+        numericalScaler.fit_transform(trainingDataframe);
+        numericalScaler.save("Diabetes");
         
 
 
@@ -132,16 +134,13 @@ public class Classification {
         SoftMaxRegression classifier = MLBuilder.create(param, configuration);
         classifier.fit(trainingDataframe);
         classifier.save("Diabetes");
-
-        //Denormalize trainingDataframe (optional)
-        dataTransformer.denormalize(trainingDataframe);
         
         
         //Use the classifier
         //------------------
         
-        //Apply the same data transformations on testingDataframe 
-        dataTransformer.transform(testingDataframe);
+        //Apply the same numerical scaling on testingDataframe
+        numericalScaler.transform(testingDataframe);
         
         //Apply the same featureSelection transformations on testingDataframe
         featureSelection.transform(testingDataframe);
@@ -151,9 +150,6 @@ public class Classification {
         
         //Get validation metrics on the test set
         ClassificationMetrics vm = new ClassificationMetrics(testingDataframe);
-        
-        //Denormalize testingDataframe (optional)
-        dataTransformer.denormalize(testingDataframe);
         
         System.out.println("Results:");
         for(Map.Entry<Integer, Record> entry: testingDataframe.entries()) {
@@ -169,8 +165,8 @@ public class Classification {
         //Clean up
         //--------
         
-        //Delete data transformer, featureselector and classifier.
-        dataTransformer.delete();
+        //Delete scaler, featureselector and classifier.
+        numericalScaler.delete();
         featureSelection.delete();
         classifier.delete();
         

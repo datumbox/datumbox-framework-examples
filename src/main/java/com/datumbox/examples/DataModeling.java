@@ -22,8 +22,9 @@ import com.datumbox.framework.common.dataobjects.Record;
 import com.datumbox.framework.common.dataobjects.TypeInference;
 import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.MLBuilder;
-import com.datumbox.framework.core.machinelearning.datatransformation.DummyXYMinMaxNormalizer;
 import com.datumbox.framework.core.machinelearning.modelselection.metrics.LinearRegressionMetrics;
+import com.datumbox.framework.core.machinelearning.preprocessing.CornerConstraintsEncoder;
+import com.datumbox.framework.core.machinelearning.preprocessing.MinMaxScaler;
 import com.datumbox.framework.core.machinelearning.regression.NLMS;
 
 import java.io.*;
@@ -88,15 +89,20 @@ public class DataModeling {
         //Setup Training Parameters
         //-------------------------
         Modeler.TrainingParameters trainingParameters = new Modeler.TrainingParameters();
-        
-        //Model Configuration
-        trainingParameters.setModelerTrainingParameters(new NLMS.TrainingParameters());
 
-        //Set data transfomation configuration
-        trainingParameters.setDataTransformerTrainingParameters(new DummyXYMinMaxNormalizer.TrainingParameters());
+        //numerical scaling configuration
+        MinMaxScaler.TrainingParameters nsParams = new MinMaxScaler.TrainingParameters();
+        trainingParameters.setNumericalScalerTrainingParameters(nsParams);
+
+        //categorical encoding configuration
+        CornerConstraintsEncoder.TrainingParameters ceParams = new CornerConstraintsEncoder.TrainingParameters();
+        trainingParameters.setCategoricalEncoderTrainingParameters(ceParams);
         
         //Set feature selection configuration
         trainingParameters.setFeatureSelectorTrainingParameters(null);
+
+        //Model Configuration
+        trainingParameters.setModelerTrainingParameters(new NLMS.TrainingParameters());
         
         
         
@@ -110,14 +116,10 @@ public class DataModeling {
         //Use the modeler
         //---------------
 
-        //Make predictions on the training set
-        modeler.predict(trainingDataframe);
-
-        //Get validation metrics on the training set
-        LinearRegressionMetrics vm = new LinearRegressionMetrics(trainingDataframe);
-        
-        //Predict a new Dataframe
+        //Make predictions on the test set
         modeler.predict(testingDataframe);
+
+        LinearRegressionMetrics vm = new LinearRegressionMetrics(testingDataframe);
         
         System.out.println("Test Results:");
         for(Map.Entry<Integer, Record> entry: testingDataframe.entries()) {

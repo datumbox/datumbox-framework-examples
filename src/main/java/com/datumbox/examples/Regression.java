@@ -21,9 +21,9 @@ import com.datumbox.framework.common.dataobjects.Record;
 import com.datumbox.framework.common.dataobjects.TypeInference;
 import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.MLBuilder;
-import com.datumbox.framework.core.machinelearning.datatransformation.XYMinMaxNormalizer;
 import com.datumbox.framework.core.machinelearning.featureselection.continuous.PCA;
 import com.datumbox.framework.core.machinelearning.modelselection.metrics.LinearRegressionMetrics;
+import com.datumbox.framework.core.machinelearning.preprocessing.MinMaxScaler;
 import com.datumbox.framework.core.machinelearning.regression.MatrixLinearRegression;
 
 import java.io.*;
@@ -90,10 +90,13 @@ public class Regression {
         //Transform Dataframe
         //-----------------
         
-        //Normalize continuous variables
-        XYMinMaxNormalizer dataTransformer = MLBuilder.create(new XYMinMaxNormalizer.TrainingParameters(), configuration);
-        dataTransformer.fit_transform(trainingDataframe);
-        dataTransformer.save("LaborStatistics");
+        //Scale continuous variables
+        MinMaxScaler.TrainingParameters nsParams = new MinMaxScaler.TrainingParameters();
+        nsParams.setScaleResponse(true);
+        MinMaxScaler numericalScaler = MLBuilder.create(nsParams, configuration);
+
+        numericalScaler.fit_transform(trainingDataframe);
+        numericalScaler.save("LaborStatistics");
         
 
 
@@ -122,17 +125,14 @@ public class Regression {
         regressor.fit(trainingDataframe);
         regressor.save("LaborStatistics");
         regressor.close(); //close the regressor, we will use it again later
-        
-        //Denormalize trainingDataframe (optional)
-        dataTransformer.denormalize(trainingDataframe);
 
 
         
         //Use the regressor
         //------------------
         
-        //Apply the same data transformations on testingDataframe 
-        dataTransformer.transform(testingDataframe);
+        //Apply the same numerical scaling on testingDataframe
+        numericalScaler.transform(testingDataframe);
         
         //Apply the same featureSelection transformations on testingDataframe
         featureSelection.transform(testingDataframe);
@@ -143,9 +143,6 @@ public class Regression {
 
         //Get validation metrics on the training set
         LinearRegressionMetrics vm = new LinearRegressionMetrics(testingDataframe);
-        
-        //Denormalize testingDataframe (optional)
-        dataTransformer.denormalize(testingDataframe);
         
         System.out.println("Results:");
         for(Map.Entry<Integer, Record> entry: testingDataframe.entries()) {
@@ -161,8 +158,8 @@ public class Regression {
         //Clean up
         //--------
         
-        //Delete data transformer, featureselector and regressor.
-        dataTransformer.delete();
+        //Delete scaler, featureselector and regressor.
+        numericalScaler.delete();
         featureSelection.delete();
         regressor.delete();
 

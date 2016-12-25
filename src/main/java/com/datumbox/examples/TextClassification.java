@@ -74,18 +74,21 @@ public class TextClassification {
         //Setup Training Parameters
         //-------------------------
         TextClassifier.TrainingParameters trainingParameters = new TextClassifier.TrainingParameters();
-        
-        //Classifier configuration
-        trainingParameters.setModelerTrainingParameters(new MultinomialNaiveBayes.TrainingParameters());
-        
-        //Set data transfomation configuration
-        trainingParameters.setDataTransformerTrainingParameters(null);
+
+        //numerical scaling configuration
+        trainingParameters.setNumericalScalerTrainingParameters(null);
+
+        //categorical encoding configuration
+        trainingParameters.setCategoricalEncoderTrainingParameters(null);
         
         //Set feature selection configuration
         trainingParameters.setFeatureSelectorTrainingParameters(new ChisquareSelect.TrainingParameters());
         
         //Set text extraction configuration
         trainingParameters.setTextExtractorParameters(new NgramsExtractor.Parameters());
+
+        //Classifier configuration
+        trainingParameters.setModelerTrainingParameters(new MultinomialNaiveBayes.TrainingParameters());
         
         
         
