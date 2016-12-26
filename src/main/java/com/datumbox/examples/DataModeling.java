@@ -23,7 +23,7 @@ import com.datumbox.framework.common.dataobjects.TypeInference;
 import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.modelselection.metrics.LinearRegressionMetrics;
-import com.datumbox.framework.core.machinelearning.preprocessing.CornerConstraintsEncoder;
+import com.datumbox.framework.core.machinelearning.preprocessing.OneHotEncoder;
 import com.datumbox.framework.core.machinelearning.preprocessing.MinMaxScaler;
 import com.datumbox.framework.core.machinelearning.regression.NLMS;
 
@@ -95,7 +95,7 @@ public class DataModeling {
         trainingParameters.setNumericalScalerTrainingParameters(nsParams);
 
         //categorical encoding configuration
-        CornerConstraintsEncoder.TrainingParameters ceParams = new CornerConstraintsEncoder.TrainingParameters();
+        OneHotEncoder.TrainingParameters ceParams = new OneHotEncoder.TrainingParameters();
         trainingParameters.setCategoricalEncoderTrainingParameters(ceParams);
         
         //Set feature selection configuration

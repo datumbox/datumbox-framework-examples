@@ -23,7 +23,7 @@ import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.clustering.Kmeans;
 import com.datumbox.framework.core.machinelearning.modelselection.metrics.ClusteringMetrics;
-import com.datumbox.framework.core.machinelearning.preprocessing.CornerConstraintsEncoder;
+import com.datumbox.framework.core.machinelearning.preprocessing.OneHotEncoder;
 import com.datumbox.framework.core.machinelearning.preprocessing.MinMaxScaler;
 
 import java.io.*;
@@ -107,8 +107,8 @@ public class Clustering {
         numericalScaler.fit_transform(trainingDataframe);
         numericalScaler.save("HeartDesease");
 
-        CornerConstraintsEncoder.TrainingParameters ceParams = new CornerConstraintsEncoder.TrainingParameters();
-        CornerConstraintsEncoder categoricalEncoder = MLBuilder.create(ceParams, configuration);
+        OneHotEncoder.TrainingParameters ceParams = new OneHotEncoder.TrainingParameters();
+        OneHotEncoder categoricalEncoder = MLBuilder.create(ceParams, configuration);
 
         categoricalEncoder.fit_transform(trainingDataframe);
         categoricalEncoder.save("HeartDesease");
