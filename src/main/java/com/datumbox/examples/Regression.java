@@ -23,7 +23,7 @@ import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.featureselection.continuous.PCA;
 import com.datumbox.framework.core.machinelearning.modelselection.metrics.LinearRegressionMetrics;
-import com.datumbox.framework.core.machinelearning.preprocessing.MinMaxScaler;
+import com.datumbox.framework.core.machinelearning.preprocessing.StandardScaler;
 import com.datumbox.framework.core.machinelearning.regression.MatrixLinearRegression;
 
 import java.io.*;
@@ -34,27 +34,27 @@ import java.util.Map;
 
 /**
  * Regression example.
- * 
+ *
  * @author Vasilis Vryniotis <bbriniotis@datumbox.com>
  */
 public class Regression {
-    
+
     /**
      * Example of how to use directly the algorithms of the framework in order to
      * perform regression. A similar approach can be used to perform clustering,
      * classification, build recommender system or perform topic modeling and dimensionality
      * reduction.
-     * 
+     *
      * @param args the command line arguments
      */
-    public static void main(String[] args) {   
+    public static void main(String[] args) {
         /**
          * There are two configuration files in the resources folder:
-         * 
+         *
          * - datumbox.configuration.properties: It contains the configuration for the storage engines (required)
          * - logback.xml: It contains the configuration file for the logger (optional)
-         */   
-        
+         */
+
         //Initialization
         //--------------
         RandomGenerator.setGlobalSeed(42L); //optionally set a specific seed for all Random objects
@@ -63,9 +63,9 @@ public class Regression {
         //configuration.setStorageConfiguration(new MapDBConfiguration()); //use MapDB engine
         //configuration.getConcurrencyConfiguration().setParallelized(true); //turn on/off the parallelization
         //configuration.getConcurrencyConfiguration().setMaxNumberOfThreadsPerTask(4); //set the concurrency level
-        
-        
-        
+
+
+
         //Reading Data
         //------------
         Dataframe trainingDataframe;
@@ -75,29 +75,29 @@ public class Regression {
             headerDataTypes.put("GNP.deflator", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("GNP", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("Unemployed", TypeInference.DataType.NUMERICAL);
-            headerDataTypes.put("Armed.Forces", TypeInference.DataType.NUMERICAL);  
+            headerDataTypes.put("Armed.Forces", TypeInference.DataType.NUMERICAL);
             headerDataTypes.put("Population", TypeInference.DataType.NUMERICAL);
-            headerDataTypes.put("Year", TypeInference.DataType.NUMERICAL); 
-            
+            headerDataTypes.put("Year", TypeInference.DataType.NUMERICAL);
+
             trainingDataframe = Dataframe.Builder.parseCSVFile(fileReader, "Employed", headerDataTypes, ',', '"', "\r\n", null, null, configuration);
         }
         catch(UncheckedIOException | IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
         }
         Dataframe testingDataframe = trainingDataframe.copy();
-        
-        
+
+
         //Transform Dataframe
         //-----------------
-        
+
         //Scale continuous variables
-        MinMaxScaler.TrainingParameters nsParams = new MinMaxScaler.TrainingParameters();
+        StandardScaler.TrainingParameters nsParams = new StandardScaler.TrainingParameters();
         nsParams.setScaleResponse(true);
-        MinMaxScaler numericalScaler = MLBuilder.create(nsParams, configuration);
+        StandardScaler numericalScaler = MLBuilder.create(nsParams, configuration);
 
         numericalScaler.fit_transform(trainingDataframe);
         numericalScaler.save("LaborStatistics");
-        
+
 
 
         //Feature Selection
