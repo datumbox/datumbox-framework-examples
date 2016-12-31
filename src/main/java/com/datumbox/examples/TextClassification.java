@@ -21,12 +21,13 @@ import com.datumbox.framework.common.dataobjects.Record;
 import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.MLBuilder;
 import com.datumbox.framework.core.machinelearning.classification.MultinomialNaiveBayes;
-import com.datumbox.framework.core.machinelearning.featureselection.categorical.ChisquareSelect;
+import com.datumbox.framework.core.machinelearning.featureselection.ChisquareSelect;
 import com.datumbox.framework.core.machinelearning.modelselection.metrics.ClassificationMetrics;
 import com.datumbox.framework.core.utilities.text.extractors.NgramsExtractor;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +83,7 @@ public class TextClassification {
         trainingParameters.setCategoricalEncoderTrainingParameters(null);
         
         //Set feature selection configuration
-        trainingParameters.setFeatureSelectorTrainingParameters(new ChisquareSelect.TrainingParameters());
+        trainingParameters.setFeatureSelectorTrainingParametersList(Arrays.asList(new ChisquareSelect.TrainingParameters()));
         
         //Set text extraction configuration
         trainingParameters.setTextExtractorParameters(new NgramsExtractor.Parameters());

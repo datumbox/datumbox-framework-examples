@@ -30,6 +30,7 @@ import com.datumbox.framework.core.machinelearning.regression.NLMS;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -99,7 +100,7 @@ public class DataModeling {
         trainingParameters.setCategoricalEncoderTrainingParameters(ceParams);
         
         //Set feature selection configuration
-        trainingParameters.setFeatureSelectorTrainingParameters(null);
+        trainingParameters.setFeatureSelectorTrainingParametersList(Arrays.asList());
 
         //Model Configuration
         trainingParameters.setModelerTrainingParameters(new NLMS.TrainingParameters());
