@@ -3,7 +3,7 @@ Code Examples for Datumbox Machine Learning Framework
 
 [![Datumbox](http://www.datumbox.com/img/logo.png)](http://www.datumbox.com/)
 
-This project provides examples on how to use the [Datumbox Machine Learning Framework](https://github.com/datumbox/datumbox-framework) v0.8.0-SNAPSHOT (Build 20170101).
+This project provides examples on how to use the [Datumbox Machine Learning Framework](https://github.com/datumbox/datumbox-framework) v0.8.0-SNAPSHOT (Build 20170102).
 
 Copyright & License
 -------------------
@@ -25,9 +25,12 @@ The code uses Maven Project Structure and contains the following code examples:
 
 All of the above files contain a main() method. To use it just clone the project on your workspace and run any of the above files.
 
-The project contains also two configuration files in the resources folder:
+The project contains also 5 configuration files in the resources folder:
 
-- [datumbox.configuration.properties](./src/main/resources/datumbox.configuration.properties): It contains the configuration for the framework (required).
+- [datumbox.configuration.properties](./src/main/resources/datumbox.configuration.properties): It defines for the default storage engine (required).
+- [datumbox.concurrencyconfiguration.properties](./src/main/resources/datumbox.concurrencyconfiguration.properties): It controls the concurrency levels (required).
+- [datumbox.inmemoryconfiguration.properties](./src/main/resources/datumbox.inmemoryconfiguration.properties): It contains the configurations for the InMemory storage engine (required).
+- [datumbox.mapdbconfiguration.properties](./src/main/resources/datumbox.mapdbconfiguration.properties): It contains the configurations for the MapDB storage engine (optional).
 - [logback.xml](./src/main/resources/logback.xml): It contains the configuration file for the logger (optional).
 
 Finally in the resources folder there are several [real world datasets](./src/main/resources/datasets/) which are used for testing.

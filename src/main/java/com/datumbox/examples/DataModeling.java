@@ -17,8 +17,8 @@ package com.datumbox.examples;
 
 import com.datumbox.framework.applications.datamodeling.Modeler;
 import com.datumbox.framework.common.Configuration;
-import com.datumbox.framework.common.dataobjects.Dataframe;
-import com.datumbox.framework.common.dataobjects.Record;
+import com.datumbox.framework.core.common.dataobjects.Dataframe;
+import com.datumbox.framework.core.common.dataobjects.Record;
 import com.datumbox.framework.common.dataobjects.TypeInference;
 import com.datumbox.framework.common.utilities.RandomGenerator;
 import com.datumbox.framework.core.machinelearning.MLBuilder;
@@ -48,9 +48,12 @@ public class DataModeling {
      */
     public static void main(String[] args) {      
         /**
-         * There are two configuration files in the resources folder:
-         * 
-         * - datumbox.configuration.properties: It contains the configuration for the storage engines (required)
+         * There are 5 configuration files in the resources folder:
+         *
+         * - datumbox.configuration.properties: It defines for the default storage engine (required)
+         * - datumbox.concurrencyconfiguration.properties: It controls the concurrency levels (required)
+         * - datumbox.inmemoryconfiguration.properties: It contains the configurations for the InMemory storage engine (required)
+         * - datumbox.mapdbconfiguration.properties: It contains the configurations for the MapDB storage engine (optional)
          * - logback.xml: It contains the configuration file for the logger (optional)
          */
         
