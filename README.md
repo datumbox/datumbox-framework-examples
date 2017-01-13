@@ -3,7 +3,7 @@ Code Examples for Datumbox Machine Learning Framework
 
 [![Datumbox](http://www.datumbox.com/img/logo.png)](http://www.datumbox.com/)
 
-This project provides examples on how to use the [Datumbox Machine Learning Framework](https://github.com/datumbox/datumbox-framework) v0.8.0-SNAPSHOT (Build 20170108).
+This project provides examples on how to use the [Datumbox Machine Learning Framework](https://github.com/datumbox/datumbox-framework) v0.8.0-SNAPSHOT (Build 20170113).
 
 Copyright & License
 -------------------
@@ -39,7 +39,7 @@ Useful Links
 ------------
 
 - [Datumbox Machine Learning Framework](https://github.com/datumbox/datumbox-framework/)
-- [Project Description](http://blog.datumbox.com/new-open-source-machine-learning-framework-written-in-java/)
+- [Datumbox Zoo: Pre-trained models](https://github.com/datumbox/datumbox-framework-zoo)
 - [Datumbox.com](http://www.datumbox.com/)
 - [Machine Learning Blog](http://blog.datumbox.com/)
 
