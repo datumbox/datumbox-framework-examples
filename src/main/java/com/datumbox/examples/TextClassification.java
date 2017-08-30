@@ -81,9 +81,6 @@ public class TextClassification {
 
         //numerical scaling configuration
         trainingParameters.setNumericalScalerTrainingParameters(null);
-
-        //categorical encoding configuration
-        trainingParameters.setCategoricalEncoderTrainingParameters(null);
         
         //Set feature selection configuration
         trainingParameters.setFeatureSelectorTrainingParametersList(Arrays.asList(new ChisquareSelect.TrainingParameters()));

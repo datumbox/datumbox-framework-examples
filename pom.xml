@@ -79,7 +79,7 @@
     <properties>
         <!-- Code Dependencies -->
         <datumbox-framework-lib-version>0.8.1-SNAPSHOT</datumbox-framework-lib-version>
-        <logback-classic-version>1.2.1</logback-classic-version>
+        <logback-classic-version>1.2.3</logback-classic-version>
         
         <!-- Configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
