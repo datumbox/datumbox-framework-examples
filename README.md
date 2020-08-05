@@ -3,12 +3,12 @@ Code Examples for Datumbox Machine Learning Framework
 
 [![Datumbox](http://www.datumbox.com/img/logo.png)](http://www.datumbox.com/)
 
-This project provides examples on how to use the [Datumbox Machine Learning Framework](https://github.com/datumbox/datumbox-framework/) v0.8.2-SNAPSHOT (Build 20191016).
+This project provides examples on how to use the [Datumbox Machine Learning Framework](https://github.com/datumbox/datumbox-framework/) v0.8.2 (Build 20200805).
 
 Copyright & License
 -------------------
 
-Copyright (c) 2013-2019 [Vasilis Vryniotis](http://blog.datumbox.com/author/bbriniotis/). 
+Copyright (c) 2013-2020 [Vasilis Vryniotis](http://blog.datumbox.com/author/bbriniotis/). 
 
 The code is licensed under the [Apache License, Version 2.0](./LICENSE).
 

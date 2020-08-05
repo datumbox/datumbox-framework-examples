@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2013-2019 Vasilis Vryniotis <bbriniotis@datumbox.com>
+    Copyright (C) 2013-2020 Vasilis Vryniotis <bbriniotis@datumbox.com>
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.datumbox</groupId>
     <artifactId>datumbox-framework-examples</artifactId>
-    <version>0.8.2-SNAPSHOT</version>
+    <version>0.8.2</version>
     
     <packaging>jar</packaging>
     
@@ -78,7 +78,7 @@
     
     <properties>
         <!-- Code Dependencies -->
-        <datumbox-framework-lib-version>0.8.2-SNAPSHOT</datumbox-framework-lib-version>
+        <datumbox-framework-lib-version>0.8.2</datumbox-framework-lib-version>
         <logback-classic-version>1.2.3</logback-classic-version>
         
         <!-- Configuration -->
